@@ -1,1 +1,1 @@
-# Python library for the Monero Waleet
+# Python library for the Monero Wallet
