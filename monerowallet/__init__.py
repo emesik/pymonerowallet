@@ -5,7 +5,6 @@ class MoneroWallet(object):
 
     def __init__(self):
         self.server = {'protocol': 'http', 'host': '127.0.0.1', 'port': 18082, 'uri': '/json_rpc'}
-        self.data = {"jsonrpc": "2.0","id": "0"}
         self.main()
 
     def main(self):
@@ -14,11 +13,14 @@ class MoneroWallet(object):
 
     def getbalance(self):
         '''Return the wallet's balance.'''
-        self.__sendrequest('getbalance')
+        # prepare json content
+        jsoncontent = open('json/getbalance.json', 'rb').read()
+        return self.__sendrequest('getbalance', jsoncontent)
 
     def getaddress(self):
         '''Return the wallet's address.'''
-        self.__sendrequest('getaddress')
+        jsoncontent = open('json/getaddress.json', 'rb').read()
+        return self.__sendrequest('getaddress', jsoncontent)
 
     def getheight(self):
         '''Returns the wallet's current block height.'''
@@ -65,21 +67,20 @@ class MoneroWallet(object):
         '''Retrieve the standard address and payment id corresponding to an integrated address.'''
         pass
 
-    def stop_wallet:
+    def stop_wallet(self):
         '''Stops the wallet, storing the current state.'''
         pass
 
-    def __sendrequest(self, reqtype):
+    def __sendrequest(self, reqtype, jsoncontent):
         '''Send a request to the server'''
-        self.data['method'] = reqtype
-        self.headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
-        req = requests.post('{protocol}://{host}:{port}{uri}'.format(url=self.server['protocol'],
+        self.headers = {'Content-Type': 'application/json'}
+        req = requests.post('{protocol}://{host}:{port}{uri}'.format(protocol=self.server['protocol'],
                                                                      host=self.server['host'],
                                                                      port=self.server['port'],
                                                                      uri=self.server['uri']),
-                                                                     headers=self.header,
-                                                                     data=self.data)
+                                                                     headers=self.headers,
+                                                                     data=jsoncontent)
         if req.status_code >= 200 and req.status_code <= 299:
-            return {'status': req.status_code, result: req.json}
+            return {'status': req.status_code, 'result': req.json()['result']}
         else:
-            return {'status': req.status_code, result: {}}
+            return {'status': req.status_code, 'result': {}}
