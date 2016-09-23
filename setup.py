@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright © 2015 Carl Chenet <carl.chenet@ohmytux.com>
+# Copyright © 2016 Carl Chenet <carl.chenet@ohmytux.com>
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -13,8 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-# Setup for Retweet
-'''Setup for Retweet'''
+# Setup for PyMoneroWallet 
+'''Setup for PyMoneroWallet'''
 
 # standard library imports
 import os.path
@@ -23,7 +23,8 @@ import os.path
 from setuptools import setup
 
 CLASSIFIERS = [
-    'Intended Audience :: End Users/Desktop',
+    'Development Status :: 1 - Planning',
+    'Intended Audience :: Developers',
     'Environment :: Console',
     'License :: OSI Approved :: GNU General Public License (GPL)',
     'Operating System :: POSIX :: Linux',
