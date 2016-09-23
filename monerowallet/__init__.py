@@ -54,9 +54,11 @@ class MoneroWallet(object):
         '''Get a list of incoming payments using a given payment id, or a list of payments ids, from a given height. This method is the preferred method over get_payments because it has the same functionality but is more extendable. Either is fine for looking up transactions by a single payment ID.'''
         pass
 
-    def incoming_transfers(self):
+    def incoming_transfers(self, transfer_type='all'):
         '''Return a list of incoming transfers to the wallet.'''
-        pass
+        jsoncontent = open('json/incomingtransfers.json', 'rb').read()
+        jsoncontent = jsoncontent.replace(b'TYPE', transfer_type.encode())
+        return self.__sendrequest(jsoncontent)
 
     def query_key(self):
         '''Return the spend or view private key.'''
