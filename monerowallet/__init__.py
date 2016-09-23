@@ -74,7 +74,8 @@ class MoneroWallet(object):
 
     def stop_wallet(self):
         '''Stops the wallet, storing the current state.'''
-        pass
+        jsoncontent = open('json/stopwallet.json', 'rb').read()
+        return self.__sendrequest(jsoncontent)
 
     def __sendrequest(self, jsoncontent):
         '''Send a request to the server'''
