@@ -43,7 +43,8 @@ class MoneroWallet(object):
 
     def store(self):
         '''Save the blockchain.'''
-        pass
+        jsoncontent = open('json/store.json', 'rb').read()
+        return self.__sendrequest(jsoncontent)
 
     def get_payments(self):
         '''Get a list of incoming payments using a given payment id.'''
