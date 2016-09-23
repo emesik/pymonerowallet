@@ -24,7 +24,7 @@ class MoneroWallet(object):
 
     def getheight(self):
         '''Returns the wallet's current block height.'''
-        jsoncontent = open('json/getaddress.json', 'rb').read()
+        jsoncontent = open('json/getheight.json', 'rb').read()
         return self.__sendrequest(jsoncontent)
         pass
 
