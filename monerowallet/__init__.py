@@ -15,15 +15,17 @@ class MoneroWallet(object):
         '''Return the wallet's balance.'''
         # prepare json content
         jsoncontent = open('json/getbalance.json', 'rb').read()
-        return self.__sendrequest('getbalance', jsoncontent)
+        return self.__sendrequest(jsoncontent)
 
     def getaddress(self):
         '''Return the wallet's address.'''
         jsoncontent = open('json/getaddress.json', 'rb').read()
-        return self.__sendrequest('getaddress', jsoncontent)
+        return self.__sendrequest(jsoncontent)
 
     def getheight(self):
         '''Returns the wallet's current block height.'''
+        jsoncontent = open('json/getaddress.json', 'rb').read()
+        return self.__sendrequest(jsoncontent)
         pass
 
     def transfer(self):
@@ -71,7 +73,7 @@ class MoneroWallet(object):
         '''Stops the wallet, storing the current state.'''
         pass
 
-    def __sendrequest(self, reqtype, jsoncontent):
+    def __sendrequest(self, jsoncontent):
         '''Send a request to the server'''
         self.headers = {'Content-Type': 'application/json'}
         req = requests.post('{protocol}://{host}:{port}{uri}'.format(protocol=self.server['protocol'],
