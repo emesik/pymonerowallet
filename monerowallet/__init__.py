@@ -26,7 +26,6 @@ class MoneroWallet(object):
         '''Returns the wallet's current block height.'''
         jsoncontent = open('json/getheight.json', 'rb').read()
         return self.__sendrequest(jsoncontent)
-        pass
 
     def transfer(self):
         '''Send monero to a number of recipients.'''
@@ -39,7 +38,8 @@ class MoneroWallet(object):
 
     def sweep_dust(self):
         '''Send all dust outputs back to the wallet's, to make them easier to spend (and mix).'''
-        pass
+        jsoncontent = open('json/sweepdust.json', 'rb').read()
+        return self.__sendrequest(jsoncontent)
 
     def store(self):
         '''Save the blockchain.'''
