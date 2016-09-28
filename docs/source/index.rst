@@ -11,6 +11,7 @@ Guide
 
    install
    use
+   monerowallet
    license
    authors
 
