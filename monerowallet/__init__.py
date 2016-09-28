@@ -1,29 +1,95 @@
+# -*- coding: utf-8 -*-
+
+"""
+    The ``monerowallet`` module
+    =============================
+ 
+    Provide pythonic way to request a Monero wallet.
+ 
+    :Example:
+ 
+    >>> import monerowallet
+    >>> mw = monerowallet.MoneroWallet()
+    >>> mw.getaddress()
+    94EJSG4URLDVwzAgDvCLaRwFGHxv75DT5MvFp1YfAxQU9icGxjVJiY8Jr9YF1atXN7UFBDx3vJq2s3CzULkPrEAuEioqyrP
+ 
+
+"""
+
 import requests
 
 class MoneroWallet(object):
-    '''MoneroWallet class'''
+    '''
+        The MoneroWallet class. Instantiate a MoneroWallet object with parameters
+        to  dialog with the RPC wallet server.
 
-    def __init__(self):
-        self.server = {'protocol': 'http', 'host': '127.0.0.1', 'port': 18082, 'uri': '/json_rpc'}
-        self.main()
+        :param protocol: Protocol for requesting the RCP server ('http' or 'https, defaults to 'http')
+        :type protocol: str
+        :param host: The host for requesting the RCP server (defaults to '127.0.0.1')
+        :type protocol: str
+        :param port: The port for requesting the RCP server (defaults to 18082)
+        :type port: str
+        :param uri: The uri for requesting the RCP server (defaults to '/json_rpc')
+        :type uri: str
+        :return: A MoneroWallet object
+        :rtype: MoneroWallet
 
-    def main(self):
-        '''Main of MoneroWallet class'''
-        pass
+        :Example:
+ 
+        >>> mw = MoneroWallet()
+
+    '''
+
+    def __init__(self, protocol='http', host='127.0.0.1', port=18082, uri='/json_rpc'):
+        #self.server = {'protocol': 'http', 'host': '127.0.0.1', 'port': 18082, 'uri': '/json_rpc'}
+        self.server = {'protocol': protocol, 'host': host, 'port': port, 'uri': uri}
 
     def getbalance(self):
-        '''Return the wallet's balance.'''
+        '''
+            Return the wallet's balance.
+
+        :return: A dictionary with the status of the request and the wallet balance
+        :rtype: dict
+
+        :Example:
+ 
+        >>> mw.getbalance()
+        2
+
+        '''
         # prepare json content
         jsoncontent = open('json/getbalance.json', 'rb').read()
         return self.__sendrequest(jsoncontent)
 
     def getaddress(self):
-        '''Return the wallet's address.'''
+        '''
+            Return the wallet's address.
+
+        :return: A dictionary with the status of the request and the address of the wallet
+        :rtype: dict
+
+        :Example:
+ 
+        >>> mw.getaddress()
+        2
+
+        '''
         jsoncontent = open('json/getaddress.json', 'rb').read()
         return self.__sendrequest(jsoncontent)
 
     def getheight(self):
-        '''Returns the wallet's current block height.'''
+        '''
+            Returns the wallet's current block height.
+
+        :return: A dictionary with the status of the request and the wallet's current block height
+        :rtype: dict
+
+        :Example:
+ 
+        >>> mw.getheight()
+        2
+
+        '''
         jsoncontent = open('json/getheight.json', 'rb').read()
         return self.__sendrequest(jsoncontent)
 
@@ -42,7 +108,17 @@ class MoneroWallet(object):
         return self.__sendrequest(jsoncontent)
 
     def store(self):
-        '''Save the blockchain.'''
+        '''
+            Save the blockchain.
+
+        :return: A dictionary with the status of the request and
+        :rtype: dict
+
+        :Example:
+ 
+        >>> mw.store()
+        
+        '''
         jsoncontent = open('json/store.json', 'rb').read()
         return self.__sendrequest(jsoncontent)
 
@@ -55,7 +131,19 @@ class MoneroWallet(object):
         pass
 
     def incoming_transfers(self, transfer_type='all'):
-        '''Return a list of incoming transfers to the wallet.'''
+        """
+            Return a list of incoming transfers to the wallet.
+
+        :param transfer_type: The transfer type ('all', 'available' or 'unavailable')
+        :type transfer_type: str
+        :return: A dictionary with the status of the request and
+        :rtype: dict
+
+        :Example:
+ 
+        >>> mw.incoming_transfers('all')
+        
+        """
         jsoncontent = open('json/incomingtransfers.json', 'rb').read()
         jsoncontent = jsoncontent.replace(b'TYPE', transfer_type.encode())
         return self.__sendrequest(jsoncontent)
@@ -73,7 +161,17 @@ class MoneroWallet(object):
         pass
 
     def stop_wallet(self):
-        '''Stops the wallet, storing the current state.'''
+        '''
+            Stops the wallet, storing the current state.
+
+        :return: A dictionary with the status of the request and
+        :rtype: dict
+
+        :Example:
+ 
+        >>> mw.stop_wallet()
+        
+        '''
         jsoncontent = open('json/stopwallet.json', 'rb').read()
         return self.__sendrequest(jsoncontent)
 
