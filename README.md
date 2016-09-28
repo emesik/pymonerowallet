@@ -28,6 +28,8 @@ Full official documentation available [online](https://pymonerowallet.readthedoc
         Type "help", "copyright", "credits" or "license" for more information.
         >>> from monerowallet import MoneroWallet
         >>> mw = MoneroWallet()
+        >>> mw.getbalance()
+        {'result': {'unlocked_balance': 2262265030000, 'balance': 2262265030000}, 'status': 200}
 
 The complete documentation about using PyMoneroWallet is available in docs/ or [online](https://pymonerowallet.readthedocs.org/en/latest).
 
