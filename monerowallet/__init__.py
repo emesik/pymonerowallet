@@ -37,6 +37,8 @@ class MoneroWallet(object):
         :Example:
  
         >>> mw = MoneroWallet()
+        >>> mw
+        <monerowallet.MoneroWallet object at 0x7fe09e4e8da0>
 
     '''
 
@@ -54,7 +56,7 @@ class MoneroWallet(object):
         :Example:
  
         >>> mw.getbalance()
-        2
+        {'result': {'unlocked_balance': 2262265030000, 'balance': 2262265030000}, 'status': 200}
 
         '''
         # prepare json content
@@ -71,7 +73,7 @@ class MoneroWallet(object):
         :Example:
  
         >>> mw.getaddress()
-        2
+        {'result': {'address': '94EJSG4URLDVwzAgDvCLaRwFGHxv75DT5MvFp1YfAxQU9icGxjVJiY8Jr9YF1atXN7UFBDx3vJq2s3CzULkPrEAuEioqyrP'}, 'status': 200}
 
         '''
         jsoncontent = open('json/getaddress.json', 'rb').read()
@@ -87,7 +89,7 @@ class MoneroWallet(object):
         :Example:
  
         >>> mw.getheight()
-        2
+        {'result': {'height': 1146043}, 'status': 200}
 
         '''
         jsoncontent = open('json/getheight.json', 'rb').read()
@@ -111,12 +113,13 @@ class MoneroWallet(object):
         '''
             Save the blockchain.
 
-        :return: A dictionary with the status of the request and
+        :return: A dictionary with the status of the request and an empty dictionary for the result key
         :rtype: dict
 
         :Example:
  
         >>> mw.store()
+        {'result': {}, 'status': 200
         
         '''
         jsoncontent = open('json/store.json', 'rb').read()
@@ -148,9 +151,27 @@ class MoneroWallet(object):
         jsoncontent = jsoncontent.replace(b'TYPE', transfer_type.encode())
         return self.__sendrequest(jsoncontent)
 
-    def query_key(self):
-        '''Return the spend or view private key.'''
-        pass
+    def query_key(self, key_type='mnemonic'):
+        '''
+            Return the spend or view private key.
+
+        :param key_type: Which key to retrieve ('mnemonic' or 'view_key', default is 'mnemonic')
+        :type key_type: str
+        :return: A dictionary with the status of the request and the key to retrieve
+        :rtype: dict
+
+        :Example:
+ 
+        >>> mw.query_key(key_type='mnemonic')
+        {'status': 200, 'result': {'key': 'adapt adapt nostril using suture tail faked relic huddle army gags bugs abyss wield tidy jailed ridges does stacking karate hockey using suture tail faked'}}
+        >>> mw.query_key(key_type='view_key')
+        {'status': 200, 'result': {'key': '49c087c10112eea3554d85bc9813c57f8bbd1cac1f3abb3b70d12cbea712c908'}}
+        
+        '''
+        jsoncontent = open('json/querykey.json', 'rb').read()
+        jsoncontent = jsoncontent.replace(b'KEYTYPE', key_type.encode())
+        return self.__sendrequest(jsoncontent)
+
 
     def make_integrated_address(self):
         '''Make an integrated address from the wallet address and a payment id.'''
@@ -164,12 +185,13 @@ class MoneroWallet(object):
         '''
             Stops the wallet, storing the current state.
 
-        :return: A dictionary with the status of the request and
+        :return: A dictionary with the status of the request and an empty result dictionary
         :rtype: dict
 
         :Example:
  
         >>> mw.stop_wallet()
+        {'status': 200, 'result': {}}
         
         '''
         jsoncontent = open('json/stopwallet.json', 'rb').read()
