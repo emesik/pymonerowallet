@@ -2,6 +2,7 @@ How to install PyMoneroWallet
 =============================
 From PyPI
 ^^^^^^^^^
+
     $ pip3 install pymonerowallet
 
 From sources
@@ -18,9 +19,10 @@ From sources
 * Install **setuptools** module::    
   
     $ wget https://bootstrap.pypa.io/ez_setup.py -O - | sudo python3.4 
-  (Alternatively, Setuptools may be installed to a user-local path)::
+
+* Alternatively, Setuptools may be installed to a user-local path::
 	  
-	       $ wget https://bootstrap.pypa.io/ez_setup.py -O - | python3.4 - --user
+   $ wget https://bootstrap.pypa.io/ez_setup.py -O - | python3.4 - --user
 
 * Untar the tarball and go to the source directory with the following commands::
 
