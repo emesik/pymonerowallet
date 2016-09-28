@@ -23,14 +23,14 @@ class MoneroWallet(object):
         The MoneroWallet class. Instantiate a MoneroWallet object with parameters
         to  dialog with the RPC wallet server.
 
-        :param protocol: Protocol for requesting the RCP server ('http' or 'https, defaults to 'http')
+        :param protocol: Protocol for requesting the RPC server ('http' or 'https, defaults to 'http')
         :type protocol: str
-        :param host: The host for requesting the RCP server (defaults to '127.0.0.1')
+        :param host: The host for requesting the RPC server (defaults to '127.0.0.1')
         :type protocol: str
-        :param port: The port for requesting the RCP server (defaults to 18082)
+        :param port: The port for requesting the RPC server (defaults to 18082)
         :type port: str
-        :param uri: The uri for requesting the RCP server (defaults to '/json_rpc')
-        :type uri: str
+        :param path: The path for requesting the RPC server (defaults to '/json_rpc')
+        :type path: str
         :return: A MoneroWallet object
         :rtype: MoneroWallet
 
@@ -40,9 +40,9 @@ class MoneroWallet(object):
 
     '''
 
-    def __init__(self, protocol='http', host='127.0.0.1', port=18082, uri='/json_rpc'):
-        #self.server = {'protocol': 'http', 'host': '127.0.0.1', 'port': 18082, 'uri': '/json_rpc'}
-        self.server = {'protocol': protocol, 'host': host, 'port': port, 'uri': uri}
+    def __init__(self, protocol='http', host='127.0.0.1', port=18082, path='/json_rpc'):
+        #self.server = {'protocol': 'http', 'host': '127.0.0.1', 'port': 18082, 'path': '/json_rpc'}
+        self.server = {'protocol': protocol, 'host': host, 'port': port, 'path': path}
 
     def getbalance(self):
         '''
@@ -178,10 +178,10 @@ class MoneroWallet(object):
     def __sendrequest(self, jsoncontent):
         '''Send a request to the server'''
         self.headers = {'Content-Type': 'application/json'}
-        req = requests.post('{protocol}://{host}:{port}{uri}'.format(protocol=self.server['protocol'],
+        req = requests.post('{protocol}://{host}:{port}{path}'.format(protocol=self.server['protocol'],
                                                                      host=self.server['host'],
                                                                      port=self.server['port'],
-                                                                     uri=self.server['uri']),
+                                                                     path=self.server['path']),
                                                                      headers=self.headers,
                                                                      data=jsoncontent)
         if req.status_code >= 200 and req.status_code <= 299:
