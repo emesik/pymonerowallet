@@ -1,7 +1,9 @@
 Documentation for the PyMoneroWallet project
 ============================================
 
-You'll find below anything you need to install and use the PyMoneroWallet library.
+PyMoneroWallet is a Python library to query a Monero wallet.
+
+You'll find in this documentation anything you need to install your Monero wallet and use the PyMoneroWallet library.
 
 Guide
 =====
@@ -22,4 +24,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
