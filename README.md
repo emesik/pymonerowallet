@@ -1,4 +1,5 @@
 ### Python library for the Monero Wallet
+
 PyMoneroWallet is a Python library to query a Monero wallet.
 Full official documentation available [online](https://pymonerowallet.readthedocs.org/en/latest/).
 
@@ -27,6 +28,8 @@ Full official documentation available [online](https://pymonerowallet.readthedoc
         Type "help", "copyright", "credits" or "license" for more information.
         >>> from monerowallet import MoneroWallet
         >>> mw = MoneroWallet()
+
+The complete documentation about using PyMoneroWallet is available in docs/ or [online](https://pymonerowallet.readthedocs.org/en/latest).
 
 
 ### Authors
