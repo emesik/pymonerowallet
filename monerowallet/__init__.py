@@ -43,7 +43,6 @@ class MoneroWallet(object):
     '''
 
     def __init__(self, protocol='http', host='127.0.0.1', port=18082, path='/json_rpc'):
-        #self.server = {'protocol': 'http', 'host': '127.0.0.1', 'port': 18082, 'path': '/json_rpc'}
         self.server = {'protocol': protocol, 'host': host, 'port': port, 'path': path}
 
     def getbalance(self):
@@ -144,7 +143,19 @@ class MoneroWallet(object):
 
         :Example:
  
-        >>> mw.incoming_transfers('all')
+        >>> import pprint # just useful for a nice display of data
+        >>> pprint.pprint(mw.incoming_transfers())
+        {'result': {'transfers': [{'amount': 30000,
+                                   'global_index': 4593,
+                                   'spent': False,
+                                   'tx_hash': '0a4562f0bfc4c5e7123e0ff212b1ca810c76a95fa45b18a7d7c4f123456caa12',
+                                   'tx_size': 606},
+                                  {'amount': 5000000,
+                                   'global_index': 23572,
+                                   'spent': False,
+                                   'tx_hash': '1a4567f0afc7e5e7123e0aa192b2ca101c75a95ba12b53a1d7c4f871234caa11',
+                                   'tx_size': 606}}]},
+         'status': 200}
         
         """
         jsoncontent = open('json/incomingtransfers.json', 'rb').read()
