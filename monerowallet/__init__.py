@@ -59,7 +59,7 @@ class MoneroWallet(object):
 
         '''
         # prepare json content
-        jsoncontent = open('json/getbalance.json', 'rb').read()
+        jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"getbalance"\n}\n'
         return self.__sendrequest(jsoncontent)
 
     def getaddress(self):
@@ -75,7 +75,8 @@ class MoneroWallet(object):
         {'result': {'address': '94EJSG4URLDVwzAgDvCLaRwFGHxv75DT5MvFp1YfAxQU9icGxjVJiY8Jr9YF1atXN7UFBDx3vJq2s3CzULkPrEAuEioqyrP'}, 'status': 200}
 
         '''
-        jsoncontent = open('json/getaddress.json', 'rb').read()
+        # prepare json content
+        jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"getaddress"\n}\n'
         return self.__sendrequest(jsoncontent)
 
     def getheight(self):
@@ -91,7 +92,8 @@ class MoneroWallet(object):
         {'result': {'height': 1146043}, 'status': 200}
 
         '''
-        jsoncontent = open('json/getheight.json', 'rb').read()
+        # prepare json content
+        jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"getheight"\n}\n'
         return self.__sendrequest(jsoncontent)
 
     def transfer(self):
@@ -105,7 +107,8 @@ class MoneroWallet(object):
 
     def sweep_dust(self):
         '''Send all dust outputs back to the wallet's, to make them easier to spend (and mix).'''
-        jsoncontent = open('json/sweepdust.json', 'rb').read()
+        # prepare json content
+        jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"sweep_dust"\n}\n'
         return self.__sendrequest(jsoncontent)
 
     def store(self):
@@ -121,7 +124,8 @@ class MoneroWallet(object):
         {'result': {}, 'status': 200
         
         '''
-        jsoncontent = open('json/store.json', 'rb').read()
+        # prepare json content
+        jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"store"\n}\n'
         return self.__sendrequest(jsoncontent)
 
     def get_payments(self):
@@ -158,7 +162,8 @@ class MoneroWallet(object):
          'status': 200}
         
         """
-        jsoncontent = open('json/incomingtransfers.json', 'rb').read()
+        # prepare json content
+        jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"incoming_transfers",\n  "params":\n    {\n      "transfer_type":"TYPE"\n    }\n}\n'
         jsoncontent = jsoncontent.replace(b'TYPE', transfer_type.encode())
         return self.__sendrequest(jsoncontent)
 
@@ -179,14 +184,31 @@ class MoneroWallet(object):
         {'status': 200, 'result': {'key': '49c087c10112eea3554d85bc9813c57f8bbd1cac1f3abb3b70d12cbea712c908'}}
         
         '''
-        jsoncontent = open('json/querykey.json', 'rb').read()
+        jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"query_key",\n  "params":\n    {\n      "key_type":"KEYTYPE"\n    }\n}\n'
         jsoncontent = jsoncontent.replace(b'KEYTYPE', key_type.encode())
         return self.__sendrequest(jsoncontent)
 
 
-    def make_integrated_address(self):
-        '''Make an integrated address from the wallet address and a payment id.'''
-        pass
+    def make_integrated_address(self, payment_id=''):
+        '''
+            Make an integrated address from the wallet address and a payment id.
+        :param payment_id: Specific payment id. Otherwise it is randomly generated
+        :type payment_id: str
+        :return: A dictionary with the status of the request and both integrated address and payment id
+        :rtype: dict
+
+        :Example:
+
+        >>> mw.make_integrated_address()
+        {'status': 200, 'result': {'integrated_address': '4JwWT4sy2bjFfzSxvRBUxTLftcNM98DT5MvFp4JNJRih3icqrjVJiY8Jr9YF1atXN7UFBDx4vKq4s3ozUpkwrEAuMLBRqCy9Vhg9Y49vcq', 'payment_id': '8c9a5fd001c3c74b'}}
+
+        '''
+        if not payment_id:
+            jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0","method":\n  "make_integrated_address",\n    "params":\n      {\n        "payment_id":""\n      }\n}\n'
+        else:
+            jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0","method":\n  "make_integrated_address",\n    "params":\n      {\n        "payment_id":"PAYMENTID"\n      }\n}\n'
+            jsoncontent = jsoncontent.replace(b'PAYMENTID', payment_id.encode())
+        return self.__sendrequest(jsoncontent)
 
     def split_integrated_address(self):
         '''Retrieve the standard address and payment id corresponding to an integrated address.'''
@@ -205,7 +227,7 @@ class MoneroWallet(object):
         {'status': 200, 'result': {}}
         
         '''
-        jsoncontent = open('json/stopwallet.json', 'rb').read()
+        jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"stop_wallet"\n}\n'
         return self.__sendrequest(jsoncontent)
 
     def __sendrequest(self, jsoncontent):
