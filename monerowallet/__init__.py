@@ -132,16 +132,15 @@ class MoneroWallet(object):
         '''
             Get a list of incoming payments using a given payment id.
 
-        :param payment_id: Protocol for requesting the RPC server ('http' or 'https, defaults to 'http')
+        :param payment_id: Payment id
         :type payment_id: str
-        :return: A dictionary with the status of the request and a list of incoming payments
+        :return: A dictionary with the status of the request and a list of incoming payments using the given payment id
         :rtype: dict
 
         :Example:
  
         >>> mw = MoneroWallet()
-        >>> mw
-        <monerowallet.MoneroWallet object at 0x7fe09e4e8da0>
+        >>> mw.get_payments('94dd4c2613f5919d')
 
         '''
         # prepare json content
