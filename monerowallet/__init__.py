@@ -128,13 +128,50 @@ class MoneroWallet(object):
         jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"store"\n}\n'
         return self.__sendrequest(jsoncontent)
 
-    def get_payments(self):
-        '''Get a list of incoming payments using a given payment id.'''
-        pass
+    def get_payments(self, payment_id):
+        '''
+            Get a list of incoming payments using a given payment id.
 
-    def get_bulk_payments(self):
-        '''Get a list of incoming payments using a given payment id, or a list of payments ids, from a given height. This method is the preferred method over get_payments because it has the same functionality but is more extendable. Either is fine for looking up transactions by a single payment ID.'''
-        pass
+        :param payment_id: Protocol for requesting the RPC server ('http' or 'https, defaults to 'http')
+        :type payment_id: str
+        :return: A dictionary with the status of the request and a list of incoming payments
+        :rtype: dict
+
+        :Example:
+ 
+        >>> mw = MoneroWallet()
+        >>> mw
+        <monerowallet.MoneroWallet object at 0x7fe09e4e8da0>
+
+        '''
+        # prepare json content
+        jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"get_payments",\n  "params":\n    {\n        "payment_id":"PAYMENTID"\n    }\n}\n'
+        jsoncontent = jsoncontent.replace(b'PAYMENTID', payment_id.encode())
+        return self.__sendrequest(jsoncontent)
+
+    def get_bulk_payments(self,payment_ids, min_block_height):
+        '''
+            Get a list of incoming payments using a given payment id, or a list of payments ids, from a given height.
+            This method is the preferred method over get_payments because it has the same functionality but is more extendable.
+            Either is fine for looking up transactions by a single payment ID.
+
+        :param payment_ids: A list of incoming payments
+        :type payment_ids: list
+        :return: A dictionary with the status of the request and the detail of the incoming payments
+        :rtype: dict
+
+        :Example:
+ 
+        >>> mw.get_bulk_payments(['94dd4c2613f5919d'],1148609)
+        
+        '''
+        # prepare json content
+        jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"get_bulk_payments",\n  "params":\n    {\n      "payment_ids":[PAYMENTIDS],\n      "min_block_height":HEIGHT\n    }\n}\n'
+        payments_list = ['"{}"'.format(i) for i in payment_ids]
+        payments_to_str = ','.join(payments_list) 
+        jsoncontent = jsoncontent.replace(b'PAYMENTIDS', payments_to_str.encode())
+        jsoncontent = jsoncontent.replace(b'HEIGHT', str(min_block_height).encode())
+        return self.__sendrequest(jsoncontent)
 
     def incoming_transfers(self, transfer_type='all'):
         """
