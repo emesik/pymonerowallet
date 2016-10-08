@@ -1,9 +1,0 @@
-{
-  "jsonrpc":"2.0",
-  "id":"0",
-  "method":"query_key",
-  "params":
-    {
-      "key_type":"KEYTYPE"
-    }
-}

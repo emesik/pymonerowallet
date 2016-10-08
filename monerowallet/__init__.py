@@ -16,7 +16,12 @@
 
 """
 
+# 3rd party library imports
 import requests
+
+# our own library imports
+from monerowallet.exceptions import MethodNotFoundError
+from monerowallet.exceptions import StatusCodeError
 
 class MoneroWallet(object):
     '''
@@ -275,7 +280,14 @@ class MoneroWallet(object):
                                                                      path=self.server['path']),
                                                                      headers=self.headers,
                                                                      data=jsoncontent)
-        if req.status_code >= 200 and req.status_code <= 299:
-            return {'status': req.status_code, 'result': req.json()['result']}
-        else:
-            return {'status': req.status_code, 'result': {}}
+        #if req.status_code >= 200 and req.status_code <= 299:
+        #    return {'status': req.status_code, 'result': req.json()['result']}
+        #else:
+        #    return {'status': req.status_code, 'result': {}}
+        print(req.json())
+        result = req.json()
+        if 'error' in result:
+            if result['error']['message'] == 'Method not found':
+                raise MethodNotFoundError('Unexpected method while requesting the server: {}'.format(jsoncontent))
+        if result['status'] != 200:
+            raise StatusCodeError('Unexpected returned status code: {}'.format(str(result)))
