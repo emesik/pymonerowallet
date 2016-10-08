@@ -11,7 +11,7 @@
     >>> import monerowallet
     >>> mw = monerowallet.MoneroWallet()
     >>> mw.getaddress()
-    94EJSG4URLDVwzAgDvCLaRwFGHxv75DT5MvFp1YfAxQU9icGxjVJiY8Jr9YF1atXN7UFBDx3vJq2s3CzULkPrEAuEioqyrP
+    '94EJSG4URLDVwzAgDvCLaRwFGHxv75DT5MvFp1YfAxQU9icGxjVJiY8Jr9YF1atXN7UFBDx3vJq2s3CzULkPrEAuEioqyrP'
  
 
 """
@@ -60,7 +60,7 @@ class MoneroWallet(object):
         :Example:
  
         >>> mw.getbalance()
-        {'result': {'unlocked_balance': 2262265030000, 'balance': 2262265030000}, 'status': 200}
+        {'unlocked_balance': 2262265030000, 'balance': 2262265030000}
 
         '''
         # prepare json content
@@ -71,35 +71,35 @@ class MoneroWallet(object):
         '''
             Return the wallet's address.
 
-        :return: A dictionary with the status of the request and the address of the wallet
+        :return: A dictionary with the address of the wallet
         :rtype: dict
 
         :Example:
  
         >>> mw.getaddress()
-        {'result': {'address': '94EJSG4URLDVwzAgDvCLaRwFGHxv75DT5MvFp1YfAxQU9icGxjVJiY8Jr9YF1atXN7UFBDx3vJq2s3CzULkPrEAuEioqyrP'}, 'status': 200}
+        '94EJSG4URLDVwzAgDvCLaRwFGHxv75DT5MvFp1YfAxQU9icGxjVJiY8Jr9YF1atXN7UFBDx3vJq2s3CzULkPrEAuEioqyrP'
 
         '''
         # prepare json content
         jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"getaddress"\n}\n'
-        return self.__sendrequest(jsoncontent)
+        return self.__sendrequest(jsoncontent)['address']
 
     def getheight(self):
         '''
             Returns the wallet's current block height.
 
-        :return: A dictionary with the status of the request and the wallet's current block height
-        :rtype: dict
+        :return: An integer with the wallet's current block height
+        :rtype: int
 
         :Example:
  
         >>> mw.getheight()
-        {'result': {'height': 1146043}, 'status': 200}
+        1146043
 
         '''
         # prepare json content
         jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"getheight"\n}\n'
-        return self.__sendrequest(jsoncontent)
+        return self.__sendrequest(jsoncontent)['height']
 
     def transfer(self):
         '''Send monero to a number of recipients.'''
@@ -126,7 +126,7 @@ class MoneroWallet(object):
         :Example:
  
         >>> mw.store()
-        {'result': {}, 'status': 200
+        {}
         
         '''
         # prepare json content
@@ -161,7 +161,7 @@ class MoneroWallet(object):
 
         :param payment_ids: A list of incoming payments
         :type payment_ids: list
-        :return: A dictionary with the status of the request and the detail of the incoming payments
+        :return: A dictionary with the detail of the incoming payments
         :rtype: dict
 
         :Example:
@@ -190,7 +190,7 @@ class MoneroWallet(object):
  
         >>> import pprint # just useful for a nice display of data
         >>> pprint.pprint(mw.incoming_transfers())
-        {'result': {'transfers': [{'amount': 30000,
+        [{'amount': 30000,
                                    'global_index': 4593,
                                    'spent': False,
                                    'tx_hash': '0a4562f0bfc4c5e7123e0ff212b1ca810c76a95fa45b18a7d7c4f123456caa12',
@@ -199,9 +199,7 @@ class MoneroWallet(object):
                                    'global_index': 23572,
                                    'spent': False,
                                    'tx_hash': '1a4567f0afc7e5e7123e0aa192b2ca101c75a95ba12b53a1d7c4f871234caa11',
-                                   'tx_size': 606}}]},
-         'status': 200}
-        
+
         """
         # prepare json content
         jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"incoming_transfers",\n  "params":\n    {\n      "transfer_type":"TYPE"\n    }\n}\n'
@@ -214,15 +212,15 @@ class MoneroWallet(object):
 
         :param key_type: Which key to retrieve ('mnemonic' or 'view_key', default is 'mnemonic')
         :type key_type: str
-        :return: A dictionary with the status of the request and the key to retrieve
-        :rtype: dict
+        :return: A string with either the mnemonic-format key either the hexadecimal-format key
+        :rtype: str
 
         :Example:
  
         >>> mw.query_key(key_type='mnemonic')
-        {'status': 200, 'result': {'key': 'adapt adapt nostril using suture tail faked relic huddle army gags bugs abyss wield tidy jailed ridges does stacking karate hockey using suture tail faked'}}
+        'adapt adapt nostril using suture tail faked relic huddle army gags bugs abyss wield tidy jailed ridges does stacking karate hockey using suture tail faked'
         >>> mw.query_key(key_type='view_key')
-        {'status': 200, 'result': {'key': '49c087c10112eea3554d85bc9813c57f8bbd1cac1f3abb3b70d12cbea712c908'}}
+        '49c087c10112eea3554d85bc9813c57f8bbd1cac1f3abb3b70d12cbea712c908'
         
         '''
         jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"query_key",\n  "params":\n    {\n      "key_type":"KEYTYPE"\n    }\n}\n'
@@ -235,13 +233,13 @@ class MoneroWallet(object):
             Make an integrated address from the wallet address and a payment id.
         :param payment_id: Specific payment id. Otherwise it is randomly generated
         :type payment_id: str
-        :return: A dictionary with the status of the request and both integrated address and payment id
+        :return: A dictionary with both integrated address and payment id
         :rtype: dict
 
         :Example:
 
         >>> mw.make_integrated_address()
-        {'status': 200, 'result': {'integrated_address': '4JwWT4sy2bjFfzSxvRBUxTLftcNM98DT5MvFp4JNJRih3icqrjVJiY8Jr9YF1atXN7UFBDx4vKq4s3ozUpkwrEAuMLBRqCy9Vhg9Y49vcq', 'payment_id': '8c9a5fd001c3c74b'}}
+        {'integrated_address': '4JwWT4sy2bjFfzSxvRBUxTLftcNM98DT5MvFp4JNJRih3icqrjVJiY8Jr9YF1atXN7UFBDx4vKq4s3ozUpkwrEAuMLBRqCy9Vhg9Y49vcq', 'payment_id': '8c9a5fd001c3c74b'}
 
         '''
         if not payment_id:
@@ -259,13 +257,13 @@ class MoneroWallet(object):
         '''
             Stops the wallet, storing the current state.
 
-        :return: A dictionary with the status of the request and an empty result dictionary
+        :return: An empty result dictionary
         :rtype: dict
 
         :Example:
  
         >>> mw.stop_wallet()
-        {'status': 200, 'result': {}}
+        {}
         
         '''
         jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"stop_wallet"\n}\n'
@@ -280,14 +278,15 @@ class MoneroWallet(object):
                                                                      path=self.server['path']),
                                                                      headers=self.headers,
                                                                      data=jsoncontent)
-        #if req.status_code >= 200 and req.status_code <= 299:
-        #    return {'status': req.status_code, 'result': req.json()['result']}
-        #else:
-        #    return {'status': req.status_code, 'result': {}}
-        print(req.json())
         result = req.json()
+        # manage returned http status code 
+        if req.status_code != 200:
+            raise StatusCodeError('Unexpected returned status code: {}'.format(req.status_code))
+        # if server-side error is detected, print it
         if 'error' in result:
             if result['error']['message'] == 'Method not found':
                 raise MethodNotFoundError('Unexpected method while requesting the server: {}'.format(jsoncontent))
-        if result['status'] != 200:
-            raise StatusCodeError('Unexpected returned status code: {}'.format(str(result)))
+            else:
+                raise Error('Unexpected error: {}'.format(str(result)))
+        # otherwise return result
+        return result['result']
