@@ -192,12 +192,17 @@ class MoneroWallet(object):
  
         >>> mw = MoneroWallet()
         >>> mw.get_payments('94dd4c2613f5919d')
+        []
 
         '''
         # prepare json content
         jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"get_payments",\n  "params":\n    {\n        "payment_id":"PAYMENTID"\n    }\n}\n'
         jsoncontent = jsoncontent.replace(b'PAYMENTID', payment_id.encode())
-        return self.__sendrequest(jsoncontent)
+        result = self.__sendrequest(jsoncontent)
+        if type(result) is type({}) and not result:
+            return []
+        else:
+            return result['payments']
 
     def get_bulk_payments(self,payment_ids, min_block_height):
         '''
@@ -212,7 +217,8 @@ class MoneroWallet(object):
 
         :Example:
  
-        >>> mw.get_bulk_payments(['94dd4c2613f5919d'],1148609)
+        >>> mw.get_bulk_payments(['94dd4c2613f5919d'], 1148609)
+        []
         
         '''
         # prepare json content
@@ -221,7 +227,11 @@ class MoneroWallet(object):
         payments_to_str = ','.join(payments_list) 
         jsoncontent = jsoncontent.replace(b'PAYMENTIDS', payments_to_str.encode())
         jsoncontent = jsoncontent.replace(b'HEIGHT', str(min_block_height).encode())
-        return self.__sendrequest(jsoncontent)
+        result = self.__sendrequest(jsoncontent)
+        if type(result) is type({}) and not result:
+            return []
+        else:
+            return result['payments']
 
     def incoming_transfers(self, transfer_type='all'):
         """
@@ -295,9 +305,24 @@ class MoneroWallet(object):
             jsoncontent = jsoncontent.replace(b'PAYMENTID', payment_id.encode())
         return self.__sendrequest(jsoncontent)
 
-    def split_integrated_address(self):
-        '''Retrieve the standard address and payment id corresponding to an integrated address.'''
-        pass
+    def split_integrated_address(self, integrated_address):
+        '''
+            Retrieve the standard address and payment id corresponding to an integrated address.
+
+            :param integrated_address: the integrated address to split
+            :type integrated_address: str
+            :return: a dictionary with the payment id and the standard address
+            :rtype: dict
+
+            :example:
+
+            >>> mw.split_integrated_address('4JwWT4sy2bjFfzSxvRBUxTLftcNM98DT5MvFp4JNJRih3icqrjVJiY8Jr9YF1atXN7UFBDx4vKq4s3ozUpkwrEAuMLBRqCy9Vhg9Y49vcq')
+            {'standard_address': '12GLv8KzVhxehv712FWPTF7CSWuVjuBarFd17QP163uxMaFyoqwmDf1aiRtS5jWgCkRsk12ycdBNJa6V4La8joznK4GAhcq', 'payment_id': '1acca0543e3082fa'}
+
+        '''
+        jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"split_integrated_address",\n  "params":\n    {\n      "integrated_address":"INTEGRATEDADDRESS"\n    }\n}\n'
+        jsoncontent = jsoncontent.replace(b'INTEGRATEDADDRESS', integrated_address.encode())
+        return self.__sendrequest(jsoncontent)
 
     def stop_wallet(self):
         '''
