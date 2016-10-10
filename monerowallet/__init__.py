@@ -318,6 +318,6 @@ class MoneroWallet(object):
             if result['error']['message'] == 'Method not found':
                 raise MethodNotFoundError('Unexpected method while requesting the server: {}'.format(jsoncontent))
             else:
-                raise Error('Unexpected error: {}'.format(str(result)))
+                raise Error('Error: {}'.format(str(result)))
         # otherwise return result
         return result['result']
