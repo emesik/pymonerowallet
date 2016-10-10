@@ -142,10 +142,25 @@ class MoneroWallet(object):
         return self.__sendrequest(jsoncontent)['tx_hash_list']
 
     def sweep_dust(self):
-        '''Send all dust outputs back to the wallet's, to make them easier to spend (and mix).'''
+        '''
+            Send all dust outputs back to the wallet's, to make them easier to spend (and mix).
+
+            :return: a list of the hashes of the transactions
+            :rtype: list
+
+            :example:
+
+            >>> mw.sweep_dust()
+            []
+
+        '''
         # prepare json content
         jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"sweep_dust"\n}\n'
-        return self.__sendrequest(jsoncontent)
+        result = self.__sendrequest(jsoncontent)
+        if type(result) is type({}) and not result:
+            return []
+        else:
+            return result['tx_hash_list']
 
     def store(self):
         '''
@@ -256,7 +271,7 @@ class MoneroWallet(object):
         '''
         jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"query_key",\n  "params":\n    {\n      "key_type":"KEYTYPE"\n    }\n}\n'
         jsoncontent = jsoncontent.replace(b'KEYTYPE', key_type.encode())
-        return self.__sendrequest(jsoncontent)
+        return self.__sendrequest(jsoncontent)['key']
 
 
     def make_integrated_address(self, payment_id=''):
@@ -302,6 +317,7 @@ class MoneroWallet(object):
 
     def __sendrequest(self, jsoncontent):
         '''Send a request to the server'''
+
         self.headers = {'Content-Type': 'application/json'}
         req = requests.post('{protocol}://{host}:{port}{path}'.format(protocol=self.server['protocol'],
                                                                      host=self.server['host'],
