@@ -204,7 +204,7 @@ class MoneroWallet(object):
         # prepare json content
         jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"incoming_transfers",\n  "params":\n    {\n      "transfer_type":"TYPE"\n    }\n}\n'
         jsoncontent = jsoncontent.replace(b'TYPE', transfer_type.encode())
-        return self.__sendrequest(jsoncontent)
+        return self.__sendrequest(jsoncontent)['transfers']
 
     def query_key(self, key_type='mnemonic'):
         '''
