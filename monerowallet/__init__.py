@@ -15,6 +15,8 @@
  
 
 """
+# standard library imports
+import json
 
 # 3rd party library imports
 import requests
@@ -22,6 +24,7 @@ import requests
 # our own library imports
 from monerowallet.exceptions import MethodNotFoundError
 from monerowallet.exceptions import StatusCodeError
+from monerowallet.exceptions import Error
 
 class MoneroWallet(object):
     '''
@@ -101,14 +104,42 @@ class MoneroWallet(object):
         jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"getheight"\n}\n'
         return self.__sendrequest(jsoncontent)['height']
 
-    def transfer(self):
-        '''Send monero to a number of recipients.'''
-        pass
+    def transfer(self, destinations):
+        '''
+            Send monero to a number of recipients.
 
+        :param destinations: a list of destinations to receive XMR
+        :return: a dict of with the hash and the key of the transaction
 
-    def transfer_split(self):
-        '''Same as transfer, but can split into more than one tx if necessary.'''
-        pass
+        :Example:
+
+        >>> mw.transfer([{'amount': 10000000000, 'address': '51EqSG4URLDFfzSxvRBUxTLftcMM76DT3MvFp3JNJRih2icqrjVJiY5Jr2YF1atXN7UFBDx4vKq4s3ozUpkwrEAuEioqyPY'}])
+        {'tx_hash': 'd4d0048c275e816ae1f6f55b4b04f7d508662679c044741db2aeb7cd63452059', 'tx_key': ''}
+
+        '''
+        finalrequest = b'{"jsonrpc":"2.0","id":"0","method":"transfer","params":{"destinations":DESTLIST}}}'
+        dests = json.dumps(destinations)
+        jsoncontent = finalrequest.replace(b'DESTLIST', dests.encode())
+        return self.__sendrequest(jsoncontent)
+
+    def transfer_split(self, destinations):
+        '''
+            Send monero to a number of recipients.
+
+        :param destinations: a list of destinations to receive XMR
+        :return: a list with the transaction hashes
+        :rtype: list
+
+        :Example:
+
+        >>> mw.transfer_split([{'amount': 10000000000, 'address': '59EqSG5UKBDFfzSxvRABxTLftcNM77DT3MvFp4JNJRLh3KCTrjBJiY4Jr9YB2atXN7UFBDx4vKq4s3ozUpkwrEAuEioqyBP'}, {'amount': 10000000000, 'address': '12EqFG3DCSDFfzSx5RBUxTLftcNM43DT2MvFp2JNJRih4444rjVJFY8Jr9YF2AtXN7UFBDx4vKq4s3ozUKkwrVAuAi55yCC'}])
+        ['653a5da2dd541ab4b3d9811f84255bb243dd7338c1218c5e75036725b6ca123e']
+
+        '''
+        finalrequest = b'{"jsonrpc":"2.0","id":"0","method":"transfer_split","params":{"destinations":DESTLIST}}}'
+        dests = json.dumps(destinations)
+        jsoncontent = finalrequest.replace(b'DESTLIST', dests.encode())
+        return self.__sendrequest(jsoncontent)['tx_hash_list']
 
     def sweep_dust(self):
         '''Send all dust outputs back to the wallet's, to make them easier to spend (and mix).'''
