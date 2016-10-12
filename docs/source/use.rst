@@ -2,8 +2,8 @@ Use the PyMoneroWallet library
 ==============================
 The first thing you need to install the Monero wallet 10.0.0::
 
-    $ mkdir monero_10.0.0
-    $ cd monero_10.0.0
+    $ mkdir monero_0.10.0.0
+    $ cd monero_0.10.0.0
     $ wget https://downloads.getmonero.org/monero.linux.x64.v0-10-0-0.tar.bz2
     $ tar jxvf monero.linux.x64.v0-10-0-0.tar.bz2
 
@@ -25,6 +25,6 @@ Now we are ready to use the PyMoneroWallet library with Python3::
     >>> from monerowallet import MoneroWallet
     >>> mw = MoneroWallet()
     >>> mw.getbalance()
-    {'result': {'unlocked_balance': 2262265030000, 'balance': 2262265030000}, 'status': 200}
+    {'unlocked_balance': 2262265030000, 'balance': 2262265030000}
 
 To get extensive details about available methods, see the documentation of the monerowallet module.
