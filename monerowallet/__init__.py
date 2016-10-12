@@ -222,7 +222,7 @@ class MoneroWallet(object):
         
         '''
         # prepare json content
-        jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"get_bulk_payments",\n  "params":\n    {\n      "payment_ids":[PAYMENTIDS],\n      "min_block_height":HEIGHT\n    }\n}\n'
+        jsoncontent = b'{"jsonrpc":"2.0","id":"0","method":"get_bulk_payments","params":{"payment_ids":[PAYMENTIDS],"min_block_height":HEIGHT}}'
         payments_list = ['"{}"'.format(i) for i in payment_ids]
         payments_to_str = ','.join(payments_list) 
         jsoncontent = jsoncontent.replace(b'PAYMENTIDS', payments_to_str.encode())
