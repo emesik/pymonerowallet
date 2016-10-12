@@ -57,7 +57,7 @@ class MoneroWallet(object):
         '''
             Return the wallet's balance.
 
-        :return: A dictionary with the status of the request and the wallet balance
+        :return: A dictionary with the wallet balance and the unlocked balance
         :rtype: dict
 
         :Example:
@@ -166,7 +166,7 @@ class MoneroWallet(object):
         '''
             Save the blockchain.
 
-        :return: A dictionary with the status of the request and an empty dictionary for the result key
+        :return: An empty dictionary
         :rtype: dict
 
         :Example:
@@ -185,7 +185,7 @@ class MoneroWallet(object):
 
         :param payment_id: Payment id
         :type payment_id: str
-        :return: A dictionary with the status of the request and a list of incoming payments using the given payment id
+        :return: A list of incoming payments using the given payment id
         :rtype: dict
 
         :Example:
@@ -239,8 +239,8 @@ class MoneroWallet(object):
 
         :param transfer_type: The transfer type ('all', 'available' or 'unavailable')
         :type transfer_type: str
-        :return: A dictionary with the status of the request and
-        :rtype: dict
+        :return: A list with the incoming transfers
+        :rtype: list
 
         :Example:
  
