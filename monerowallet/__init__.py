@@ -255,6 +255,8 @@ class MoneroWallet(object):
                                    'global_index': 23572,
                                    'spent': False,
                                    'tx_hash': '1a4567f0afc7e5e7123e0aa192b2ca101c75a95ba12b53a1d7c4f871234caa11',
+                                   'tx_size': 606},
+        ]
 
         """
         # prepare json content
@@ -287,6 +289,7 @@ class MoneroWallet(object):
     def make_integrated_address(self, payment_id=''):
         '''
             Make an integrated address from the wallet address and a payment id.
+
         :param payment_id: Specific payment id. Otherwise it is randomly generated
         :type payment_id: str
         :return: A dictionary with both integrated address and payment id
