@@ -155,7 +155,7 @@ class MoneroWallet(object):
 
         '''
         # prepare json content
-        jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"sweep_dust"\n}\n'
+        jsoncontent = b'{"jsonrpc":"2.0","id":"0","method":"sweep_dust"}'
         result = self.__sendrequest(jsoncontent)
         if type(result) is type({}) and not result:
             return []
