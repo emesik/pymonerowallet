@@ -302,9 +302,9 @@ class MoneroWallet(object):
 
         '''
         if not payment_id:
-            jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0","method":\n  "make_integrated_address",\n    "params":\n      {\n        "payment_id":""\n      }\n}\n'
+            jsoncontent = b'{"jsonrpc":"2.0","id":"0","method":"make_integrated_address","params":{"payment_id":""}}'
         else:
-            jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0","method":\n  "make_integrated_address",\n    "params":\n      {\n        "payment_id":"PAYMENTID"\n      }\n}\n'
+            jsoncontent = b'{"jsonrpc":"2.0","id":"0","method":"make_integrated_address","params":{"payment_id":"PAYMENTID"}}'
             jsoncontent = jsoncontent.replace(b'PAYMENTID', payment_id.encode())
         return self.__sendrequest(jsoncontent)
 
