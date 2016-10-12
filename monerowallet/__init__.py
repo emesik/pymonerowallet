@@ -340,7 +340,7 @@ class MoneroWallet(object):
         {}
         
         '''
-        jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"stop_wallet"\n}\n'
+        jsoncontent = b'{"jsonrpc":"2.0","id":"0","method":"stop_wallet"}'
         return self.__sendrequest(jsoncontent)
 
     def __sendrequest(self, jsoncontent):
