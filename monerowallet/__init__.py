@@ -67,7 +67,7 @@ class MoneroWallet(object):
 
         '''
         # prepare json content
-        jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"getbalance"\n}\n'
+        jsoncontent = b'{"jsonrpc":"2.0","id":"0","method":"getbalance"}'
         return self.__sendrequest(jsoncontent)
 
     def getaddress(self):
