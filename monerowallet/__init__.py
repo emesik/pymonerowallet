@@ -260,7 +260,7 @@ class MoneroWallet(object):
 
         """
         # prepare json content
-        jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"incoming_transfers",\n  "params":\n    {\n      "transfer_type":"TYPE"\n    }\n}\n'
+        jsoncontent = b'{"jsonrpc":"2.0","id":"0","method":"incoming_transfers","params":{"transfer_type":"TYPE"}}'
         jsoncontent = jsoncontent.replace(b'TYPE', transfer_type.encode())
         return self.__sendrequest(jsoncontent)['transfers']
 
