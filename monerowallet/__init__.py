@@ -281,7 +281,7 @@ class MoneroWallet(object):
         '49c087c10112eea3554d85bc9813c57f8bbd1cac1f3abb3b70d12cbea712c908'
         
         '''
-        jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"query_key",\n  "params":\n    {\n      "key_type":"KEYTYPE"\n    }\n}\n'
+        jsoncontent = b'{"jsonrpc":"2.0","id":"0","method":"query_key","params":{"key_type":"KEYTYPE"}}'
         jsoncontent = jsoncontent.replace(b'KEYTYPE', key_type.encode())
         return self.__sendrequest(jsoncontent)['key']
 
