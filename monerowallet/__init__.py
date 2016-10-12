@@ -323,7 +323,7 @@ class MoneroWallet(object):
             {'standard_address': '12GLv8KzVhxehv712FWPTF7CSWuVjuBarFd17QP163uxMaFyoqwmDf1aiRtS5jWgCkRsk12ycdBNJa6V4La8joznK4GAhcq', 'payment_id': '1acca0543e3082fa'}
 
         '''
-        jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"split_integrated_address",\n  "params":\n    {\n      "integrated_address":"INTEGRATEDADDRESS"\n    }\n}\n'
+        jsoncontent = b'{"jsonrpc":"2.0","id":"0","method":"split_integrated_address","params":{"integrated_address":"INTEGRATEDADDRESS"}}'
         jsoncontent = jsoncontent.replace(b'INTEGRATEDADDRESS', integrated_address.encode())
         return self.__sendrequest(jsoncontent)
 
