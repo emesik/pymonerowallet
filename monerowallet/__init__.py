@@ -176,7 +176,7 @@ class MoneroWallet(object):
         
         '''
         # prepare json content
-        jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"store"\n}\n'
+        jsoncontent = b'{"jsonrpc":"2.0","id":"0","method":"store"}'
         return self.__sendrequest(jsoncontent)
 
     def get_payments(self, payment_id):
