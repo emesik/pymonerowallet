@@ -22,17 +22,21 @@ Full official documentation available [online](https://pymonerowallet.readthedoc
 
 ### Use PyMoneroWallet
 
+
+#### Get the balance and the unlocked balance of the wallet
+
         $ python3
-        Python 3.4.2 (default, Oct  8 2014, 10:45:20) 
-        [GCC 4.9.1] on linux
-        Type "help", "copyright", "credits" or "license" for more information.
         >>> from monerowallet import MoneroWallet
         >>> mw = MoneroWallet()
         >>> mw.getbalance()
         {'result': {'unlocked_balance': 2262265030000, 'balance': 2262265030000}, 'status': 200}
 
-The complete documentation about using PyMoneroWallet is available in docs/ or [online](https://pymonerowallet.readthedocs.org/en/latest).
+#### Transfer Monero to a given address
 
+        >>> mw.transfer([{'amount': 10000000000, 'address': '51EqSG4URLDFfzSxvRBUxTLftcMM76DT3MvFp3JNJRih2icqrjVJiY5Jr2YF1atXN7UFBDx4vKq4s3ozUpkwrEAuEioqyPY'}])
+        {'tx_hash': 'd4d0048c275e816ae1f6f55b4b04f7d508662679c044741db2aeb7cd63452059', 'tx_key': ''}
+
+The complete documentation about using PyMoneroWallet is available in docs/ or [online](https://pymonerowallet.readthedocs.org/en/latest).
 
 ### Authors
 
