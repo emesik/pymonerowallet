@@ -196,7 +196,7 @@ class MoneroWallet(object):
 
         '''
         # prepare json content
-        jsoncontent = b'{\n  "jsonrpc":"2.0",\n  "id":"0",\n  "method":"get_payments",\n  "params":\n    {\n        "payment_id":"PAYMENTID"\n    }\n}\n'
+        jsoncontent = b'{"jsonrpc":"2.0","id":"0","method":"get_payments","params":{"payment_id":"PAYMENTID"}}'
         jsoncontent = jsoncontent.replace(b'PAYMENTID', payment_id.encode())
         result = self.__sendrequest(jsoncontent)
         if type(result) is type({}) and not result:
