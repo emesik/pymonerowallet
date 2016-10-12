@@ -42,7 +42,7 @@ setup(
     author_email='chaica@ohmytux.com',
     url='https://github.com/chaica/pymonerowallet',
     download_url='https://github.com/chaica/pymonerowallet',
-    packages=['pymonerowallet'],
+    packages=['monerowallet','monerowallet.exceptions'],
     install_requires=['requests'],
     test_suite = 'tests',
 )
