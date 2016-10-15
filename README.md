@@ -30,7 +30,7 @@ Full official documentation available [online](https://pymonerowallet.readthedoc
         >>> from monerowallet import MoneroWallet
         >>> mw = MoneroWallet()
         >>> mw.getbalance()
-        {'result': {'unlocked_balance': 2262265030000, 'balance': 2262265030000}, 'status': 200}
+        {'unlocked_balance': 2262265030000, 'balance': 2262265030000}
 
 #### Transfer Monero to a given address
 
