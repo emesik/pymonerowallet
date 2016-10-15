@@ -74,8 +74,8 @@ class MoneroWallet(object):
         '''
             Return the wallet's address.
 
-        :return: A dictionary with the address of the wallet
-        :rtype: dict
+        :return: A string with the address of the wallet
+        :rtype: str
 
         :Example:
  
@@ -185,8 +185,8 @@ class MoneroWallet(object):
 
         :param payment_id: Payment id
         :type payment_id: str
-        :return: A list of incoming payments using the given payment id
-        :rtype: dict
+        :return: A list of dictionaries with the details of the incoming payments
+        :rtype: list
 
         :Example:
  
@@ -212,7 +212,7 @@ class MoneroWallet(object):
 
         :param payment_ids: A list of incoming payments
         :type payment_ids: list
-        :return: A dictionary with the detail of the incoming payments
+        :return: A list of dictionaries with the details of the incoming payments
         :rtype: dict
 
         :Example:
@@ -332,7 +332,7 @@ class MoneroWallet(object):
         '''
             Stops the wallet, storing the current state.
 
-        :return: An empty result dictionary
+        :return: An empty dictionary
         :rtype: dict
 
         :Example:
