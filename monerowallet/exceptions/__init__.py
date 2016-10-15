@@ -20,6 +20,6 @@ class StatusCodeError(Error):
 
 class MethodNotFoundError(Error):
     '''
-        Returned exception when RCP server not able to understand the request
+        Returned exception when the RCP server of the Monero wallet is not able to understand the request
     '''
     pass

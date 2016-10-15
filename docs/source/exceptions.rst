@@ -1,0 +1,2 @@
+.. automodule:: monerowallet.exceptions
+   :members:

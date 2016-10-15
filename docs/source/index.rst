@@ -16,6 +16,7 @@ Guide
    install
    use
    monerowallet
+   exceptions
    license
    authors
 
