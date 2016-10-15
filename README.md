@@ -21,6 +21,8 @@ Full official documentation available [online](https://pymonerowallet.readthedoc
         # # or
         # python3.4 setup.py install
 
+PyMoneroWallet 0.1 was only tested with Monero 0.10.0.0
+
 ### Use PyMoneroWallet
 
 
