@@ -17,6 +17,7 @@ Guide
    use
    monerowallet
    exceptions
+   troubleshooting
    license
    authors
 
