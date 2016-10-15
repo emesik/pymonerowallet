@@ -191,8 +191,8 @@ class MoneroWallet(object):
         :Example:
  
         >>> mw = MoneroWallet()
-        >>> mw.get_payments('94dd4c2613f5919d')
-        []
+        >>> mw.get_payments('fdfcfd993482b58b')
+        [{'unlock_time': 0, 'amount': 1000000000, 'tx_hash': 'db3870905ce3c8ca349e224688c344371addca7be4eb36d5dbc61600c8f75726', 'block_height': 1157951, 'payment_id': 'fdfcfd993482b58b'}]
 
         '''
         # prepare json content
@@ -218,7 +218,8 @@ class MoneroWallet(object):
         :Example:
  
         >>> mw.get_bulk_payments(['94dd4c2613f5919d'], 1148609)
-        []
+        >>> mw.get_bulk_payments(['fdfcfd993482b58b'], 1157950)
+        [{'unlock_time': 0, 'amount': 1000000000, 'tx_hash': 'db3870905ce3c8ca349e224688c344371addca7be4eb36d5dbc61600c8f75726', 'block_height': 1157951, 'payment_id': 'fdfcfd993482b58b'}]
         
         '''
         # prepare json content
