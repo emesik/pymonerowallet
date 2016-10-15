@@ -17,7 +17,7 @@ Once you are synchronized, you need to launch your Monero wallet for the first t
 
 After having creating your Monero wallet and define your password, you need to launch your Monero wallet activating the RPC calls::
 
-    $ monero-wallet-cli --wallet-file monerowallet --password 'v3rY S3cr3t P4sSw0rd' --rpc-bind-ip 127.0.0.1 --rpc-bind-port 1808
+    $ monero-wallet-cli --wallet-file monerowallet --password 'v3rY S3cr3t P4sSw0rd' --rpc-bind-ip 127.0.0.1 --rpc-bind-port 18082
 
 Now we are ready to use the PyMoneroWallet library with Python3::
 
