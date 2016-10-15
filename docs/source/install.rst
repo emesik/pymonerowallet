@@ -9,6 +9,8 @@ From sources
 ^^^^^^^^^^^^
 * You need at least Python 3.4.
 
+* PyMoneroWallet 0.1 was only tested with Monero 0.10.0.0
+
 * On some Linux Distribution **setuptools** package does not come with default python install, you need to install it.
 
 * Install **PIP**::
