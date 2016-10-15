@@ -1,6 +1,6 @@
 Use the PyMoneroWallet library
 ==============================
-The first thing you need to install the Monero wallet 10.0.0::
+The first thing you need to install the Monero wallet 0.10.0.0::
 
     $ mkdir monero_0.10.0.0
     $ cd monero_0.10.0.0
