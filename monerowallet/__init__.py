@@ -3,16 +3,16 @@
 """
     The ``monerowallet`` module
     =============================
- 
+
     Provide pythonic way to request a Monero wallet.
- 
+
     :Example:
- 
+
     >>> import monerowallet
     >>> mw = monerowallet.MoneroWallet()
     >>> mw.getaddress()
     '94EJSG4URLDVwzAgDvCLaRwFGHxv75DT5MvFp1YfAxQU9icGxjVJiY8Jr9YF1atXN7UFBDx3vJq2s3CzULkPrEAuEioqyrP'
- 
+
 
 """
 # standard library imports
@@ -25,6 +25,7 @@ import requests
 from monerowallet.exceptions import MethodNotFoundError
 from monerowallet.exceptions import StatusCodeError
 from monerowallet.exceptions import Error
+
 
 class MoneroWallet(object):
     '''
@@ -43,7 +44,7 @@ class MoneroWallet(object):
         :rtype: MoneroWallet
 
         :Example:
- 
+
         >>> mw = MoneroWallet()
         >>> mw
         <monerowallet.MoneroWallet object at 0x7fe09e4e8da0>
@@ -61,7 +62,7 @@ class MoneroWallet(object):
         :rtype: dict
 
         :Example:
- 
+
         >>> mw.getbalance()
         {'unlocked_balance': 2262265030000, 'balance': 2262265030000}
 
@@ -78,7 +79,7 @@ class MoneroWallet(object):
         :rtype: str
 
         :Example:
- 
+
         >>> mw.getaddress()
         '94EJSG4URLDVwzAgDvCLaRwFGHxv75DT5MvFp1YfAxQU9icGxjVJiY8Jr9YF1atXN7UFBDx3vJq2s3CzULkPrEAuEioqyrP'
 
@@ -95,7 +96,7 @@ class MoneroWallet(object):
         :rtype: int
 
         :Example:
- 
+
         >>> mw.getheight()
         1146043
 
@@ -119,7 +120,7 @@ class MoneroWallet(object):
         {'tx_hash': 'd4d0048c275e816ae1f6f55b4b04f7d508662679c044741db2aeb7cd63452059', 'tx_key': ''}
 
         '''
-        finalrequest = b'{"jsonrpc":"2.0","id":"0","method":"transfer","params":{"destinations":DESTLIST,"mixin":MIXIN}}'.replace(b'MIXIN',str(mixin).encode())
+        finalrequest = b'{"jsonrpc":"2.0","id":"0","method":"transfer","params":{"destinations":DESTLIST,"mixin":MIXIN}}'.replace(b'MIXIN', str(mixin).encode())
         dests = json.dumps(destinations)
         jsoncontent = finalrequest.replace(b'DESTLIST', dests.encode())
         return self.__sendrequest(jsoncontent)
@@ -139,7 +140,7 @@ class MoneroWallet(object):
         ['653a5da2dd541ab4b3d9811f84255bb243dd7338c1218c5e75036725b6ca123e']
 
         '''
-        finalrequest = b'{"jsonrpc":"2.0","id":"0","method":"transfer_split","params":{"destinations":DESTLIST,"mixin":MIXIN}}'.replace(b'MIXIN',str(mixin).encode())
+        finalrequest = b'{"jsonrpc":"2.0","id":"0","method":"transfer_split","params":{"destinations":DESTLIST,"mixin":MIXIN}}'.replace(b'MIXIN', str(mixin).encode())
         dests = json.dumps(destinations)
         jsoncontent = finalrequest.replace(b'DESTLIST', dests.encode())
         return self.__sendrequest(jsoncontent)['tx_hash_list']
@@ -173,10 +174,10 @@ class MoneroWallet(object):
         :rtype: dict
 
         :Example:
- 
+
         >>> mw.store()
         {}
-        
+
         '''
         # prepare json content
         jsoncontent = b'{"jsonrpc":"2.0","id":"0","method":"store"}'
@@ -192,7 +193,7 @@ class MoneroWallet(object):
         :rtype: list
 
         :Example:
- 
+
         >>> mw = MoneroWallet()
         >>> mw.get_payments('fdfcfd993482b58b')
         [{'unlock_time': 0, 'amount': 1000000000, 'tx_hash': 'db3870905ce3c8ca349e224688c344371addca7be4eb36d5dbc61600c8f75726', 'block_height': 1157951, 'payment_id': 'fdfcfd993482b58b'}]
@@ -207,7 +208,7 @@ class MoneroWallet(object):
         else:
             return result['payments']
 
-    def get_bulk_payments(self,payment_ids, min_block_height):
+    def get_bulk_payments(self, payment_ids, min_block_height):
         '''
             Get a list of incoming payments using a given payment id, or a list of payments ids, from a given height.
             This method is the preferred method over get_payments because it has the same functionality but is more extendable.
@@ -219,16 +220,16 @@ class MoneroWallet(object):
         :rtype: dict
 
         :Example:
- 
+
         >>> mw.get_bulk_payments(['94dd4c2613f5919d'], 1148609)
         >>> mw.get_bulk_payments(['fdfcfd993482b58b'], 1157950)
         [{'unlock_time': 0, 'amount': 1000000000, 'tx_hash': 'db3870905ce3c8ca349e224688c344371addca7be4eb36d5dbc61600c8f75726', 'block_height': 1157951, 'payment_id': 'fdfcfd993482b58b'}]
-        
+
         '''
         # prepare json content
         jsoncontent = b'{"jsonrpc":"2.0","id":"0","method":"get_bulk_payments","params":{"payment_ids":[PAYMENTIDS],"min_block_height":HEIGHT}}'
         payments_list = ['"{}"'.format(i) for i in payment_ids]
-        payments_to_str = ','.join(payments_list) 
+        payments_to_str = ','.join(payments_list)
         jsoncontent = jsoncontent.replace(b'PAYMENTIDS', payments_to_str.encode())
         jsoncontent = jsoncontent.replace(b'HEIGHT', str(min_block_height).encode())
         result = self.__sendrequest(jsoncontent)
@@ -247,7 +248,7 @@ class MoneroWallet(object):
         :rtype: list
 
         :Example:
- 
+
         >>> import pprint # just useful for a nice display of data
         >>> pprint.pprint(mw.incoming_transfers())
         [{'amount': 30000,
@@ -278,17 +279,16 @@ class MoneroWallet(object):
         :rtype: str
 
         :Example:
- 
+
         >>> mw.query_key(key_type='mnemonic')
         'adapt adapt nostril using suture tail faked relic huddle army gags bugs abyss wield tidy jailed ridges does stacking karate hockey using suture tail faked'
         >>> mw.query_key(key_type='view_key')
         '49c087c10112eea3554d85bc9813c57f8bbd1cac1f3abb3b70d12cbea712c908'
-        
+
         '''
         jsoncontent = b'{"jsonrpc":"2.0","id":"0","method":"query_key","params":{"key_type":"KEYTYPE"}}'
         jsoncontent = jsoncontent.replace(b'KEYTYPE', key_type.encode())
         return self.__sendrequest(jsoncontent)['key']
-
 
     def make_integrated_address(self, payment_id=''):
         '''
@@ -339,10 +339,10 @@ class MoneroWallet(object):
         :rtype: dict
 
         :Example:
- 
+
         >>> mw.stop_wallet()
         {}
-        
+
         '''
         jsoncontent = b'{"jsonrpc":"2.0","id":"0","method":"stop_wallet"}'
         return self.__sendrequest(jsoncontent)
@@ -352,13 +352,13 @@ class MoneroWallet(object):
 
         self.headers = {'Content-Type': 'application/json'}
         req = requests.post('{protocol}://{host}:{port}{path}'.format(protocol=self.server['protocol'],
-                                                                     host=self.server['host'],
-                                                                     port=self.server['port'],
-                                                                     path=self.server['path']),
-                                                                     headers=self.headers,
-                                                                     data=jsoncontent)
+                                                                      host=self.server['host'],
+                                                                      port=self.server['port'],
+                                                                      path=self.server['path']),
+                            headers=self.headers,
+                            data=jsoncontent)
         result = req.json()
-        # manage returned http status code 
+        # manage returned http status code
         if req.status_code != 200:
             raise StatusCodeError('Unexpected returned status code: {}'.format(req.status_code))
         # if server-side error is detected, print it
