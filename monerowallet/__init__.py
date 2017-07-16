@@ -105,12 +105,14 @@ class MoneroWallet(object):
         jsoncontent = b'{"jsonrpc":"2.0","id":"0","method":"getheight"}'
         return self.__sendrequest(jsoncontent)['height']
 
-    def transfer(self, destinations, mixin=3):
+    def transfer(self, destinations, mixin=3, payment_id='', get_tx_key=True):
         '''
             Send monero to a number of recipients.
 
         :param destinations: a list of destinations to receive XMR
         :param mixin: number of outputs from the blockchain to mix with (defaults to 3)
+        :param payment_id: 32-byte/64-character hex string to identify a transaction (defaults to '')
+        :param get_tx_key: return the transaction key after sending (defaults to True)
         :return: a dict of with the hash and the key of the transaction
         :rtype: dict
 
@@ -120,17 +122,25 @@ class MoneroWallet(object):
         {'tx_hash': 'd4d0048c275e816ae1f6f55b4b04f7d508662679c044741db2aeb7cd63452059', 'tx_key': ''}
 
         '''
-        finalrequest = b'{"jsonrpc":"2.0","id":"0","method":"transfer","params":{"destinations":DESTLIST,"mixin":MIXIN}}'.replace(b'MIXIN', str(mixin).encode())
+        finalrequest = b'{"jsonrpc":"2.0","id":"0","method":"transfer","params":{"destinations":DESTLIST,"mixin":MIXIN,"get_tx_key":TXKEY}}'.replace(b'MIXIN', str(mixin).encode())
+        if get_tx_key:
+            finalrequest = finalrequest.replace(b'TXKEY', 'true'.encode())
+        else:
+            finalrequest = finalrequest.replace(b'TXKEY', 'false'.encode())
         dests = json.dumps(destinations)
         jsoncontent = finalrequest.replace(b'DESTLIST', dests.encode())
         return self.__sendrequest(jsoncontent)
 
-    def transfer_split(self, destinations, mixin=3):
+    def transfer_split(self, destinations, mixin=3, payment_id='', get_tx_key=True, new_algorithm=False):
         '''
             Send monero to a number of recipients.
 
         :param destinations: a list of destinations to receive XMR
         :param mixin: number of outputs from the blockchain to mix with (defaults to 3)
+        :param payment_id: 32-byte/64-character hex string to identify a transaction (defaults to '')
+        :param get_tx_key: return the transaction key after sending (defaults to True)
+        :param new_algorithm: True to use the new transaction construction algorithm (defaults to False)
+
         :return: a list with the transaction hashes
         :rtype: list
 
@@ -140,7 +150,16 @@ class MoneroWallet(object):
         ['653a5da2dd541ab4b3d9811f84255bb243dd7338c1218c5e75036725b6ca123e']
 
         '''
-        finalrequest = b'{"jsonrpc":"2.0","id":"0","method":"transfer_split","params":{"destinations":DESTLIST,"mixin":MIXIN}}'.replace(b'MIXIN', str(mixin).encode())
+        finalrequest = b'{"jsonrpc":"2.0","id":"0","method":"transfer_split","params":{"destinations":DESTLIST,"mixin":MIXIN,"get_tx_key":TXKEY, "new_algorithm":NEWALG}}'.replace(b'MIXIN', str(mixin).encode())
+        if get_tx_key:
+            finalrequest = finalrequest.replace(b'TXKEY', 'true'.encode())
+        else:
+            finalrequest = finalrequest.replace(b'TXKEY', 'false'.encode())
+        if new_algorithm:
+            finalrequest = finalrequest.replace(b'NEWALG', 'true'.encode())
+        else:
+            finalrequest = finalrequest.replace(b'NEWALG', 'false'.encode())
+
         dests = json.dumps(destinations)
         jsoncontent = finalrequest.replace(b'DESTLIST', dests.encode())
         return self.__sendrequest(jsoncontent)['tx_hash_list']
@@ -161,7 +180,7 @@ class MoneroWallet(object):
         # prepare json content
         jsoncontent = b'{"jsonrpc":"2.0","id":"0","method":"sweep_dust"}'
         result = self.__sendrequest(jsoncontent)
-        if type(result) is type({}) and not result:
+        if isinstance(result, dict) and not result:
             return []
         else:
             return result['tx_hash_list']
@@ -203,7 +222,7 @@ class MoneroWallet(object):
         jsoncontent = b'{"jsonrpc":"2.0","id":"0","method":"get_payments","params":{"payment_id":"PAYMENTID"}}'
         jsoncontent = jsoncontent.replace(b'PAYMENTID', payment_id.encode())
         result = self.__sendrequest(jsoncontent)
-        if type(result) is type({}) and not result:
+        if isinstance(result, dict) and not result:
             return []
         else:
             return result['payments']
@@ -233,7 +252,7 @@ class MoneroWallet(object):
         jsoncontent = jsoncontent.replace(b'PAYMENTIDS', payments_to_str.encode())
         jsoncontent = jsoncontent.replace(b'HEIGHT', str(min_block_height).encode())
         result = self.__sendrequest(jsoncontent)
-        if type(result) is type({}) and not result:
+        if isinstance(result, dict) and not result:
             return []
         else:
             return result['payments']
@@ -367,5 +386,5 @@ class MoneroWallet(object):
                 raise MethodNotFoundError('Unexpected method while requesting the server: {}'.format(jsoncontent))
             else:
                 raise Error('Error: {}'.format(str(result)))
-        # otherwise return result
+            # otherwise return result
         return result['result']
