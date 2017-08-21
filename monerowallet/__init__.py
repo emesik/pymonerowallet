@@ -36,7 +36,7 @@ class MoneroWallet(object):
         :type protocol: str
         :param host: The host for requesting the RPC server (defaults to '127.0.0.1')
         :type protocol: str
-        :param port: The port for requesting the RPC server (defaults to 18082)
+        :param port: The port for requesting the RPC server (defaults to 18081)
         :type port: str
         :param path: The path for requesting the RPC server (defaults to '/json_rpc')
         :type path: str
@@ -51,8 +51,8 @@ class MoneroWallet(object):
 
     '''
 
-    def __init__(self, protocol='http', host='127.0.0.1', port=18082, path='/json_rpc'):
-        self.server = {'protocol': protocol, 'host': host, 'port': port, 'path': path}
+    def __init__(self, protocol='http', host='127.0.0.1', port=18081, path='/json_rpc', rpcuser='default', rpcpassword='default'):
+        self.server = {'protocol': protocol, 'host': host, 'port': port, 'path': path, 'rpcuser': rpcuser, 'rpcpassword': rpcpassword}
 
     def getbalance(self):
         '''
@@ -127,8 +127,8 @@ class MoneroWallet(object):
             finalrequest = finalrequest.replace(b'TXKEY', 'true'.encode())
         else:
             finalrequest = finalrequest.replace(b'TXKEY', 'false'.encode())
-        dests = json.dumps(destinations)
-        jsoncontent = finalrequest.replace(b'DESTLIST', dests.encode())
+            dests = json.dumps(destinations)
+            jsoncontent = finalrequest.replace(b'DESTLIST', dests.encode())
         return self.__sendrequest(jsoncontent)
 
     def transfer_split(self, destinations, mixin=3, payment_id='', get_tx_key=True, new_algorithm=False):
@@ -370,12 +370,24 @@ class MoneroWallet(object):
         '''Send a request to the server'''
 
         self.headers = {'Content-Type': 'application/json'}
-        req = requests.post('{protocol}://{host}:{port}{path}'.format(protocol=self.server['protocol'],
-                                                                      host=self.server['host'],
-                                                                      port=self.server['port'],
-                                                                      path=self.server['path']),
-                            headers=self.headers,
-                            data=jsoncontent)
+        reg = None
+        if self.server['rpcuser'] is not None:
+            req = requests.post('{protocol}://{host}:{port}{path}'.format(protocol=self.server['protocol'],
+                                                                          host=self.server['host'],
+                                                                          port=self.server['port'],
+                                                                          path=self.server['path']),
+                                headers=self.headers,
+                                data=jsoncontent,
+                                auth=requests.auth.HTTPDigestAuth(self.server['rpcuser'], self.server['rpcpassword'])
+            )
+
+        else:
+            req = requests.post('{protocol}://{host}:{port}{path}'.format(protocol=self.server['protocol'],
+                                                                          host=self.server['host'],
+                                                                          port=self.server['port'],
+                                                                          path=self.server['path']),
+                                headers=self.headers,
+                                data=jsoncontent)
         result = req.json()
         # manage returned http status code
         if req.status_code != 200:
