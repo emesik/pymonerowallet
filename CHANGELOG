@@ -7,3 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.1] - 2016-10-16
 ### Added
 - initial version
+
+## [0.2] - 2017-09-02
+### Added
+- added missing params on rpc methods
+- started adding missing rpc methods
+- added utility functions to convert from atomic units to coins
+
+### Changed
+- Changed indentation of doc
+- Fixed / Improved doc on several methods
+- Refactored code to simplify the rpc methods

@@ -44,6 +44,8 @@ The complete documentation about using PyMoneroWallet is available in docs/ or [
 ### Authors
 
 Carl Chenet <chaica@ohmytux.com>
+Cryptobadger <cryptobadger@riseup.net>
+
 
 ### License
 
