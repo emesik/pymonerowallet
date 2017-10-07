@@ -12,14 +12,20 @@ class Error(Exception):
     '''
     pass
 
+
 class StatusCodeError(Error):
     '''
-        Returned exception when returned HTTP status code is different from 200
+        Returned when HTTP status code is different from 200
     '''
     pass
 
+
+class Unauthorized(StatusCodeError):
+    pass
+
+
 class MethodNotFoundError(Error):
     '''
-        Returned exception when the RCP server of the Monero wallet is not able to understand the request
+        Returned when the RPC server of the Monero wallet is not able to understand the request
     '''
     pass

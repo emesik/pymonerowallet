@@ -23,9 +23,7 @@ import json
 import requests
 
 # our own library imports
-from monerowallet.exceptions import MethodNotFoundError
-from monerowallet.exceptions import StatusCodeError
-from monerowallet.exceptions import Error
+from monerowallet import exceptions
 
 
 class MoneroWallet(object):
@@ -377,16 +375,21 @@ class MoneroWallet(object):
                             data=json.dumps(self.data),
                             auth=requests.auth.HTTPDigestAuth(self.server['rpcuser'], self.server['rpcpassword'])
                             )
+
+        if req.status_code == 401:
+            raise exceptions.Unauthorized('401 Unauthorized. Check username and password.')
+        elif req.status_code != 200:
+            raise exceptions.StatusCodeError('Unexpected returned status code: {}'.format(req.status_code))
         result = req.json()
 
-        if req.status_code != 200:
-            raise StatusCodeError('Unexpected returned status code: {}'.format(req.status_code))
         # if server-side error is detected, print it
         if 'error' in result:
             if result['error']['message'] == 'Method not found':
-                raise MethodNotFoundError('Unexpected method while requesting the server: {}'.format(json.dumps(self.data)))
+                raise exceptions.MethodNotFoundError(
+                    'Unexpected method while requesting the server: {}'.format(
+                        json.dumps(self.data)))
             else:
-                raise Error('Error: {}'.format(str(result)))
+                raise exceptions.Error('Error: {}'.format(str(result)))
             # otherwise return result
         return result['result']
 
