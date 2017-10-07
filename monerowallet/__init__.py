@@ -393,36 +393,38 @@ class MoneroWallet(object):
             # otherwise return result
         return result['result']
 
-    def atomic_to_coins(self, units):
-        '''
-        Converts Monero atomic units to Monero coins. One coin is 1e12 atomic units.
 
-        :param units: Atomic units which are converted to coins
-        :type units: int
+def atomic_to_coins(units):
+    '''
+    Converts Monero atomic units to Monero coins. One coin is 1e12 atomic units.
 
-        :return: Monero coins
-        :rtype: float
+    :param units: Atomic units which are converted to coins
+    :type units: int
 
-        :Example:
-        >>> mw.atomic_to_coins(10000000000000)
-        10.0
+    :return: Monero coins
+    :rtype: Decimal
 
-        '''
-        return units / Decimal(1000000000000)
+    :Example:
+    >>> monerowallet.atomic_to_coins(10000000000000)
+    Decimal('10.0')
 
-    def coins_to_atomic(self, coins):
-        '''
-        Converts Monero coins to Monero atomic units. One coin is 1e12 atomic units.
+    '''
+    return units / Decimal(1000000000000)
 
-        :param units: Monero coins which are converted to atomic units
-        :type units: float
 
-        :return: Atomic units
-        :rtype: int
+def coins_to_atomic(coins):
+    '''
+    Converts Monero coins to Monero atomic units. One coin is 1e12 atomic units.
 
-        :Example:
-        >>> mw.coins_to_atomic(10)
-        10000000000000
+    :param coins: Monero coins which are converted to atomic units
+    :type coins: Decimal or float
 
-        '''
-        return int(coins * 1000000000000)
+    :return: Atomic units
+    :rtype: int
+
+    :Example:
+    >>> monerowallet.coins_to_atomic(10)
+    10000000000000
+
+    '''
+    return int(coins * 1000000000000)
