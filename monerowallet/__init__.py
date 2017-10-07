@@ -16,6 +16,7 @@
 
 """
 # standard library imports
+from decimal import Decimal
 import json
 
 # 3rd party library imports
@@ -404,12 +405,11 @@ class MoneroWallet(object):
         10.0
 
         '''
-        return units / 1000000000000.0
+        return units / Decimal(1000000000000)
 
-    def coins_to_atomicunits(self, coins):
+    def coins_to_atomic(self, coins):
         '''
         Converts Monero coins to Monero atomic units. One coin is 1e12 atomic units.
-
 
         :param units: Monero coins which are converted to atomic units
         :type units: float
@@ -418,7 +418,7 @@ class MoneroWallet(object):
         :rtype: int
 
         :Example:
-        >>> mw.coins_to_atomicunits(10)
+        >>> mw.coins_to_atomic(10)
         10000000000000
 
         '''
