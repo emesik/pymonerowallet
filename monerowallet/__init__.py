@@ -382,13 +382,16 @@ class MoneroWallet(object):
         elif req.status_code != 200:
             raise exceptions.StatusCodeError('Unexpected returned status code: {}'.format(req.status_code))
         result = req.json()
+        _log.debug("Result: {0}".format(result))
 
         # if server-side error is detected, print it
         if 'error' in result:
-            if result['error']['message'] == 'Method not found':
+            if result['error']['code'] == -32601:
                 raise exceptions.MethodNotFoundError(
                     'Unexpected method while requesting the server: {}'.format(
                         json.dumps(data)))
+            elif result['error']['code'] == -4:
+                raise exceptions.GenericTransferError(result['error']['message'])
             else:
                 raise exceptions.Error('Error {code}: {message}'.format(**result['error']))
             # otherwise return result
