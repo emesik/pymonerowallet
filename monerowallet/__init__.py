@@ -180,9 +180,6 @@ class MoneroWallet(object):
         else:
             return []
 
-    def sweep_all():
-        print("TODO")
-
     def store(self):
         '''
         Save the blockchain.
