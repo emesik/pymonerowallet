@@ -18,12 +18,15 @@
 # standard library imports
 from decimal import Decimal
 import json
+import logging
 
 # 3rd party library imports
 import requests
 
 # our own library imports
 from monerowallet import exceptions
+
+_log = logging.getLogger(__name__)
 
 
 class MoneroWallet(object):
@@ -364,6 +367,7 @@ class MoneroWallet(object):
                 validparams[key] = params[key]
         if validparams:
             data['params'] = validparams
+        _log.debug("Method: {0}, params: {1}".format(method, validparams))
         req = requests.post('{protocol}://{host}:{port}{path}'.format(protocol=self.server['protocol'],
                                                                       host=self.server['host'],
                                                                       port=self.server['port'],
