@@ -388,12 +388,14 @@ class MoneroWallet(object):
 
         # if server-side error is detected, print it
         if 'error' in result:
-            if result['error']['code'] == -32601:
+            code = result['error']['code']
+            message = result['error']['message']
+            if code == -32601:
                 raise exceptions.MethodNotFoundError(
                     'Unexpected method while requesting the server: {}'.format(
                         json.dumps(data)))
-            elif result['error']['code'] == -4:
-                raise exceptions.GenericTransferError(result['error']['message'])
+            elif code in exceptions._errorcode_to_exception.keys():
+                raise exceptions._errorcode_to_exception[code](message)
             else:
                 raise exceptions.Error('Error {code}: {message}'.format(**result['error']))
             # otherwise return result
