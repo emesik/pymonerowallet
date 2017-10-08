@@ -390,7 +390,7 @@ class MoneroWallet(object):
                     'Unexpected method while requesting the server: {}'.format(
                         json.dumps(data)))
             else:
-                raise exceptions.Error('Error: {}'.format(str(result)))
+                raise exceptions.Error('Error {code}: {message}'.format(**result['error']))
             # otherwise return result
         return result['result']
 
