@@ -360,19 +360,19 @@ class MoneroWallet(object):
     def __sendrequest(self, method, params={}):
         '''Send a request to the server'''
         self.headers = {'Content-Type': 'application/json'}
-        self.data = {'jsonrpc': '2.0', 'id': '0', 'method': method}
-        self.validparams = {}
+        data = {'jsonrpc': '2.0', 'id': '0', 'method': method}
+        validparams = {}
         for key in params:
             if params[key] is not None:
-                self.validparams[key] = params[key]
-        if self.validparams:
-            self.data['params'] = self.validparams
+                validparams[key] = params[key]
+        if validparams:
+            data['params'] = validparams
         req = requests.post('{protocol}://{host}:{port}{path}'.format(protocol=self.server['protocol'],
                                                                       host=self.server['host'],
                                                                       port=self.server['port'],
                                                                       path=self.server['path']),
                             headers=self.headers,
-                            data=json.dumps(self.data),
+                            data=json.dumps(data),
                             auth=requests.auth.HTTPDigestAuth(self.server['rpcuser'], self.server['rpcpassword'])
                             )
 
@@ -387,7 +387,7 @@ class MoneroWallet(object):
             if result['error']['message'] == 'Method not found':
                 raise exceptions.MethodNotFoundError(
                     'Unexpected method while requesting the server: {}'.format(
-                        json.dumps(self.data)))
+                        json.dumps(data)))
             else:
                 raise exceptions.Error('Error: {}'.format(str(result)))
             # otherwise return result
