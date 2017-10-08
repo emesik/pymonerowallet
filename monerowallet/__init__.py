@@ -106,7 +106,10 @@ class MoneroWallet(object):
         '''
         return self.__sendrequest("getheight")['height']
 
-    def transfer(self, destinations, mixin=None, payment_id=None, priority=0, get_tx_hex=False, get_tx_key=True, unlock_time=None):
+    def transfer(self, destinations,
+            mixin=None, payment_id=None, priority=0,
+            get_tx_key=True, get_tx_hex=False,
+            unlock_time=None):
         '''
         Send monero to a number of recipients.
 
@@ -118,10 +121,10 @@ class MoneroWallet(object):
         :type payment_id: str
         :param priority: set a priority for the transaction (1-4 for unimportant, normal, elevated, priority; 0 = default)
         :type priority: int
-        :param get_tx_hex: return the transaction as hex string after sending (defaults to False)
-        :type get_tx_hex: bool
         :param get_tx_key: return the transaction key after sending (defaults to True)
         :type get_tx_key: bool
+        :param get_tx_hex: return the transaction as hex string after sending (defaults to False)
+        :type get_tx_hex: bool
         :param unlock_time: Number of blocks before the monero can be spent (0 to not add a lock). (defaults to None)
         :type unlock_time: int
         :return: a dict with the transaction hash (tx_hash; type: str), the fee (fee; type: int), the transaction as hex string (tx_blob; type: str) if get_tx_hex was True and the key of the transaction (tx_key; type: str) if get_tx_key was True
@@ -133,9 +136,21 @@ class MoneroWallet(object):
 {'fee': 20141160000, 'tx_blob': '', 'tx_hash': '04cdf47d7927895cde9d3ddf687f70c68bd6fbbd4a21bfd1c669bb3b4b670823', 'tx_key': '150926e63b78f788993cb0efd111c95026ced686735fe0daf3b5cff63fd72b0c'}
 
         '''
-        return self.__sendrequest("transfer", {"destinations": destinations, "mixin": mixin, "payment_id": payment_id, "unlock_time": unlock_time, "get_tx_key": get_tx_key})
+        return self.__sendrequest(
+            "transfer", {
+                "destinations": destinations,
+                "mixin": mixin,
+                "payment_id": payment_id,
+                "priority": priority,
+                "unlock_time": unlock_time,
+                "get_tx_key": get_tx_key,
+                "get_tx_hex": get_tx_hex,
+            })
 
-    def transfer_split(self, destinations, unlock_time=None, mixin=None, payment_id='', get_tx_keys=True, get_tx_hex=False,new_algorithm=False):
+    def transfer_split(self, destinations,
+            mixin=None, payment_id=None, priority=0,
+            get_tx_keys=True, get_tx_hex=False,
+            unlock_time=None, new_algorithm=True):
         '''
         Send monero to a number of recipients. Can split into more than one transaction if necessary.
 
@@ -145,6 +160,8 @@ class MoneroWallet(object):
         :type mixin: int
         :param payment_id: 32-byte/64-character hex string to identify a transaction. If none is given a payment_id is randomly generated (defaults to None)
         :type payment_id: str
+        :param priority: set a priority for the transaction (1-4 for unimportant, normal, elevated, priority; 0 = default)
+        :type priority: int
         :param get_tx_keys: return the transaction key after sending (defaults to True)
         :type get_tx_keys: bool
         :param get_tx_hex: return the transaction as hex string after sending (defaults to False)
@@ -164,7 +181,17 @@ class MoneroWallet(object):
 
 
         '''
-        return self.__sendrequest("transfer_split", {"destinations": destinations, "mixin": mixin, "payment_id": payment_id, "unlock_time": unlock_time, "get_tx_hex": get_tx_hex, "get_tx_keys": get_tx_keys, "new_algorithm": new_algorithm})
+        return self.__sendrequest(
+            "transfer_split", {
+                "destinations": destinations,
+                "mixin": mixin,
+                "payment_id": payment_id,
+                "priority": priority,
+                "unlock_time": unlock_time,
+                "get_tx_keys": get_tx_keys,
+                "get_tx_hex": get_tx_hex,
+                "new_algorithm": new_algorithm
+            })
 
     def sweep_dust(self):
         '''
