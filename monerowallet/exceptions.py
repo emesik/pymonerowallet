@@ -77,6 +77,18 @@ class NotOpen(RPCError):
 class TransactionTooLarge(RPCError):
     pass
 
+class NotEnoughMoney(RPCError):
+    pass
+
+class NotEnoughOutputsToMix(RPCError):
+    pass
+
+class ZeroDestination(RPCError):
+    pass
+
+class TransactionNotPossible(RPCError):
+    pass
+
 _errorcode_to_exception = {
      -1 : UnknownError,
      -2 : WrongAddress,
@@ -93,4 +105,8 @@ _errorcode_to_exception = {
     -13 : NotOpen,
 # Proposal:
     -14 : TransactionTooLarge,
+    -15 : NotEnoughMoney,
+    -16 : NotEnoughOutputsToMix,
+    -17 : ZeroDestination,
+    -18 : TransactionNotPossible,
 }
