@@ -106,7 +106,7 @@ class MoneroWallet(object):
         '''
         return self.__sendrequest("getheight")['height']
 
-    def transfer(self, destinations, mixin=None, payment_id=None, get_tx_hex=False, get_tx_key=True, unlock_time=None):
+    def transfer(self, destinations, mixin=None, payment_id=None, priority=0, get_tx_hex=False, get_tx_key=True, unlock_time=None):
         '''
         Send monero to a number of recipients.
 
@@ -116,6 +116,8 @@ class MoneroWallet(object):
         :type mixin: int
         :param payment_id: 32-byte/64-character hex string to identify a transaction. If none is given a payment_id is randomly generated (defaults to None)
         :type payment_id: str
+        :param priority: set a priority for the transaction (1-4 for unimportant, normal, elevated, priority; 0 = default)
+        :type priority: int
         :param get_tx_hex: return the transaction as hex string after sending (defaults to False)
         :type get_tx_hex: bool
         :param get_tx_key: return the transaction key after sending (defaults to True)
