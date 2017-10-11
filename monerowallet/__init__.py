@@ -386,6 +386,25 @@ class MoneroWallet(object):
         '''
         return self.__sendrequest("make_uri", {"address": address, "amount": amount, "payment_id": payment_id, "recipient_name": recipient_name, "tx_description": tx_description})
 
+    def create_wallet(self, filename, password, language='English'):
+        '''
+        Create a new wallet. The daemon should be running with --wallet-dir arg.
+        '''
+        return self.__sendrequest(
+            "create_wallet", {
+                'filename': filename,
+                'password': password,
+                'language': language })
+
+    def open_wallet(self, filename, password):
+        '''
+        Open existing wallet. The daemon should be running with --wallet-dir arg.
+        '''
+        return self.__sendrequest(
+            "open_wallet", {
+                'filename': filename,
+                'password': password })
+
     def __sendrequest(self, method, params={}):
         '''Send a request to the server'''
         self.headers = {'Content-Type': 'application/json'}
