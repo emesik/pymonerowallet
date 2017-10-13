@@ -3,3 +3,5 @@
 __pycache__
 docs/build/
 .coverage
+testing-ground/*.log*
+testing-ground/monerod-data/*

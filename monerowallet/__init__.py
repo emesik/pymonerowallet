@@ -307,7 +307,12 @@ class MoneroWallet(object):
         ]
 
         """
-        return self.__sendrequest("incoming_transfers", {"transfer_type": transfer_type})['transfers']
+        result = self.__sendrequest("incoming_transfers", {"transfer_type": transfer_type})
+        try:
+            return result['transfers']
+        except KeyError:
+            # XXX: It would be nice of wallet RPC to return empty list here
+            return []
 
     def query_key(self, key_type='mnemonic'):
         '''
