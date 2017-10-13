@@ -31,6 +31,11 @@ class MethodNotFoundError(RPCError):
     pass
 
 
+class InvalidParamsError(RPCError):
+    "The RPC server of the Monero wallet cannot process request parameters"
+    pass
+
+
 # The following errors are based on
 # https://github.com/monero-project/monero/blob/master/src/wallet/wallet_rpc_server_error_codes.h
 

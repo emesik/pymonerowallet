@@ -445,6 +445,10 @@ class MoneroWallet(object):
                 raise exceptions.MethodNotFoundError(
                     'Unexpected method while requesting the server: {}'.format(
                         json.dumps(data)))
+            elif code == -32602:
+                raise exceptions.InvalidParamsError(
+                    'Invalid parameters while requesting the server: {}'.format(
+                        json.dumps(data)))
             elif code in exceptions._errorcode_to_exception.keys():
                 raise exceptions._errorcode_to_exception[code](message)
             else:
