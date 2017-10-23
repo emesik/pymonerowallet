@@ -103,6 +103,12 @@ class InvalidPassword(RPCError):
 class NoWalletDirConfigured(RPCError):
     pass
 
+class AccountIndexOutOfBound(RPCError):
+    pass
+
+class AddressIndexOutOfBound(RPCError):
+    pass
+
 _errorcode_to_exception = {
      -1 : UnknownError,
      -2 : WrongAddress,
@@ -117,13 +123,15 @@ _errorcode_to_exception = {
     -11 : WrongURI,
     -12 : WrongIndex,
     -13 : WalletNotOpen,
-# Proposal (https://github.com/monero-project/monero/pull/2619)
-    -14 : TransactionTooLarge,
-    -15 : NotEnoughMoney,
-    -16 : NotEnoughOutputsToMix,
-    -17 : ZeroDestination,
-    -18 : TransactionNotPossible,
-    -19 : WalletAlreadyExists,
-    -20 : InvalidPassword,
-    -21 : NoWalletDirConfigured,
+    -14 : AccountIndexOutOfBound,
+    -15 : AddressIndexOutOfBound,
+# Proposal (https://github.com/monero-project/monero/pull/2711)
+    -16 : TransactionNotPossible,
+    -17 : NotEnoughMoney,
+    -18 : TransactionTooLarge,
+    -19 : NotEnoughOutputsToMix,
+    -20 : ZeroDestination,
+    -21 : WalletAlreadyExists,
+    -22 : InvalidPassword,
+    -23 : NoWalletDirConfigured,
 }
