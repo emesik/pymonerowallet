@@ -147,8 +147,8 @@ class MoneroWallet(object):
 
     def transfer(self, destinations,
             mixin=None, payment_id=None, priority=0,
-            get_tx_key=True, get_tx_hex=False,
-            unlock_time=None):
+            get_tx_key=True, get_tx_hex=False, unlock_time=None,
+            account_index=0, subaddr_indices=None):
         '''
         Send monero to a number of recipients.
 
@@ -178,6 +178,8 @@ class MoneroWallet(object):
         return self.__sendrequest(
             "transfer", {
                 "destinations": destinations,
+                "account_index": account_index,
+                "subaddr_indices": subaddr_indices,
                 "mixin": mixin,
                 "payment_id": payment_id,
                 "priority": priority,
@@ -189,7 +191,8 @@ class MoneroWallet(object):
     def transfer_split(self, destinations,
             mixin=None, payment_id=None, priority=0,
             get_tx_keys=True, get_tx_hex=False,
-            unlock_time=None, new_algorithm=True):
+            unlock_time=None, new_algorithm=True,
+            account_index=0, subaddr_indices=None):
         '''
         Send monero to a number of recipients. Can split into more than one transaction if necessary.
 
@@ -223,6 +226,8 @@ class MoneroWallet(object):
         return self.__sendrequest(
             "transfer_split", {
                 "destinations": destinations,
+                "account_index": account_index,
+                "subaddr_indices": subaddr_indices,
                 "mixin": mixin,
                 "payment_id": payment_id,
                 "priority": priority,
