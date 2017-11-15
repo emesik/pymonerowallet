@@ -61,11 +61,13 @@ class MoneroWallet(object):
     def __init__(self, protocol='http', host='127.0.0.1', port=18082, path='/json_rpc', rpcuser='default', rpcpassword='default'):
         self.server = {'protocol': protocol, 'host': host, 'port': port, 'path': path, 'rpcuser': rpcuser, 'rpcpassword': rpcpassword}
 
-    def getbalance(self):
+    def getbalance(self, account_index=0):
         '''
-        Return the wallet's balance.
+        Return the account's balance.
 
-        :return: A dictionary with the wallet balance and the unlocked balance
+        :param account_index: Index of the account to check balance for
+        :type account_index: int
+        :return: A dictionary with the wallet balance, unlocked balance and a list of subaddresses with their balances
         :rtype: dict
 
         :Example:
@@ -73,14 +75,21 @@ class MoneroWallet(object):
         >>> mw.getbalance()
         {'unlocked_balance': 2262265030000, 'balance': 2262265030000}
 
-        '''
-        return self.__sendrequest("getbalance")
+        :Example with subaddresses:
 
-    def getaddress(self):
-        '''
-        Return the wallet's address.
+        >>> mw.getbalance()
+        {'balance': 31976252778736417, 'per_subaddress': [{'address': '9u9j6xG1GNu4ghrdUL35m5PQcJV69YF8731DSTDoh7pDgkBWz2LWNzncq7M5s1ARjPRhvGPX4dBUeC3xNj4wzfrjV6SY3e9', 'address_index': 0, 'balance': 31776252778736417, 'label': 'Primary account', 'num_unspent_outputs': 8519, 'unlocked_balance': 30829196841324088}, {'address': 'BcUqEB1xnpBV2T3E9oYRwgGSzCGTEkDGD3zAEW1on9UMXBoRT7PBZfLTWjA6wgfHc824C6JxRT5N7GN74X3EehApQT4FbHR', 'address_index': 2, 'balance': 200000000000000, 'label': '(Untitled address)', 'num_unspent_outputs': 26, 'unlocked_balance': 200000000000000}], 'unlocked_balance': 31029196841324088}
 
-        :return: A string with the address of the wallet
+        '''
+        return self.__sendrequest("getbalance", {'account_index': account_index})
+
+    def getaddress(self, account_index=0):
+        '''
+        Return the account's address.
+
+        :param account_index: Index of the account to get address for
+        :type account_index: int
+        :return: A string with the address of the account
         :rtype: str
 
         :Example:
@@ -89,7 +98,37 @@ class MoneroWallet(object):
         '94EJSG4URLDVwzAgDvCLaRwFGHxv75DT5MvFp1YfAxQU9icGxjVJiY8Jr9YF1atXN7UFBDx3vJq2s3CzULkPrEAuEioqyrP'
 
         '''
-        return self.__sendrequest("getaddress")['address']
+        return self.__sendrequest("getaddress", {'account_index': account_index})['address']
+
+    def create_address(self, account_index=0, label=None):
+        '''
+        Create new subaddress.
+
+        :param account_index: Index of the account to create address within
+        :type account_index: int
+        :param label: Label for the new address
+        :type label: str
+        :return: A dictionary with new subaddress and its' index within account.
+        :rtype: dict
+
+        :Example:
+
+        >>> mw.create_address()
+        {'address': 'BgZRz9ow9UUjU2ZhhJGLejDLACY7Tf74UGQjaD8YpVguYH76A8RZGC27hLgTGDo38mBaP78vyTFQbM1oV7YSuMjH3Wj5iBj', 'address_index': 3}
+        '''
+        return self.__sendrequest("create_address", {'account_index': account_index, 'label': label})
+
+    def label_address(self, account_index=0, address_index=0, label=None):
+        return self.__sendrequest(
+            "label_address", {
+                'index': { 'major': account_index, 'minor': address_index },
+                'label': label})
+
+    def get_accounts(self):
+        return self.__sendrequest("get_accounts")
+
+    def create_account(self, label=None):
+        return self.__sendrequest("create_account", { 'label': label })
 
     def getheight(self):
         '''
