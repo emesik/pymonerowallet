@@ -1,5 +1,10 @@
 ### Python library for the Monero Wallet
 
+**Important note:** The development of this code has been stopped. Please check the new
+[comprehensive Python module for Monero](https://github.com/emesik/monero-python).
+We have subaddresses and multisig coming soon to Monero and the approach of JSON RPC
+thin wrapper presented by this code is not enough.
+
 PyMoneroWallet is a Python library to query a Monero wallet.
 
 Full official documentation available [online](https://pymonerowallet.readthedocs.org/en/latest/).
